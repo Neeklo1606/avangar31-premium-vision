@@ -17,8 +17,8 @@ git push origin main
 
 echo ""
 echo "=== Триггер обновления на сервере ==="
-# Замените YOUR_TOKEN на реальный токен из deploy.php
-curl -s "https://bot.siteaccess.ru/deploy.php?token=my-secret-deploy-token-2026"
+# Вызываем webhook на сервере для автообновления
+curl -s "https://bot.siteaccess.ru/deploy.php?token=Lg2026_Deploy_SecureToken_98ba9f"
 
 echo ""
 echo ""

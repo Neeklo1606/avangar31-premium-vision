@@ -5,6 +5,9 @@
   RewriteEngine On
   RewriteBase /
 
+  # Исключение: deploy.php выполняется напрямую (не перенаправляем в dist/)
+  RewriteRule ^deploy\.php$ - [L]
+
   # Главная страница — отдаём dist/index.html
   RewriteRule ^$ dist/index.html [L]
 

@@ -5,8 +5,8 @@
  * После push на GitHub вызовите: https://bot.siteaccess.ru/deploy.php?token=ВАШ_СЕКРЕТ
  */
 
-// Секретный токен (измените на свой!)
-define('DEPLOY_TOKEN', 'my-secret-deploy-token-2026');
+// Секретный токен для безопасности webhook
+define('DEPLOY_TOKEN', 'Lg2026_Deploy_SecureToken_98ba9f');
 
 // Путь к проекту на сервере (корень сайта)
 define('PROJECT_PATH', '/home/dsc23ytp/game_bot/public_html');
