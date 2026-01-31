@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '../ui'
 import ResidentialComplexCard from '../ui/ResidentialComplexCard'
 import YandexMapBlock from '../ui/YandexMapBlock'
 import locationIcon from '../../assets/icons/location-icon.svg'
@@ -72,9 +73,6 @@ const ResidentialComplexSection = () => {
     })
   }
 
-  const btnClass =
-    'min-h-[42px] px-5 flex items-center gap-2 bg-[#F5F6FC] rounded-[5px] text-[#000000] text-[13px] font-rubik font-normal hover:bg-[#E8EAF2] transition-colors'
-
   return (
     <section className="w-full bg-white py-10 lg:py-14" id="catalog-jk-section">
       <div className="max-w-[1200px] mx-auto px-4 lg:px-[60px]">
@@ -88,26 +86,34 @@ const ResidentialComplexSection = () => {
           <img src={locationIcon} alt="" className="w-4 h-4 shrink-0" aria-hidden />
           <div className="ml-auto flex flex-wrap items-center gap-3">
             {viewMode === 'cards' ? (
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setViewMode('map')}
-                className={btnClass}
+                icon={<img src={mapPinIcon} alt="" className="w-[15px] h-[19px] shrink-0" aria-hidden />}
+                iconPosition="left"
+                className="bg-[#F5F6FC] hover:bg-[#E8EAF2] text-[#000000]"
               >
-                <img src={mapPinIcon} alt="" className="w-[15px] h-[19px] shrink-0" aria-hidden />
                 На карте
-              </button>
+              </Button>
             ) : (
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setViewMode('cards')}
-                className={btnClass}
+                className="bg-[#F5F6FC] hover:bg-[#E8EAF2] text-[#000000]"
               >
                 Список
-              </button>
+              </Button>
             )}
-            <Link to="/catalog/new-buildings" className={btnClass}>
+            <Button
+              variant="ghost"
+              size="sm"
+              to="/catalog/new-buildings"
+              className="bg-[#F5F6FC] hover:bg-[#E8EAF2] text-[#000000]"
+            >
               Все предложения
-            </Link>
+            </Button>
           </div>
         </div>
 

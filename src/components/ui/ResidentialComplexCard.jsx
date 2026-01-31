@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { IconButton } from './index'
 import heartIcon from '../../assets/icons/heart-icon.svg'
 import heartIconFilled from '../../assets/icons/heart-icon-filled.svg'
 
@@ -179,18 +180,20 @@ const ResidentialComplexCard = ({
         </div>
 
         {/* Кнопка «Добавить в избранное» — без подложки, только иконка 22×20 */}
-        <button
-          type="button"
+        <IconButton
+          variant="ghost"
+          size="md"
           onClick={handleToggleFavorite}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-          aria-label={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
-        >
-          <img
-            src={isFavorite ? heartIconFilled : heartIcon}
-            alt=""
-            className="w-[22px] h-5"
-          />
-        </button>
+          className="absolute top-3 right-3 bg-transparent hover:bg-white/20"
+          ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+          icon={
+            <img
+              src={isFavorite ? heartIconFilled : heartIcon}
+              alt=""
+              className="w-[22px] h-5"
+            />
+          }
+        />
       </div>
 
       {/* Контент: flex-1 — занимает оставшееся место; при сворачивании фото блок квартир появляется в освободившемся пространстве */}

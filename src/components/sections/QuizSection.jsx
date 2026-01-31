@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from '../ui'
 import { Link } from 'react-router-dom'
 
 // Секция «Подберем объект под Ваш запрос» — Figma node 98-2562
@@ -135,12 +136,13 @@ const QuizSection = () => {
                 <p className="text-[#8E8E8E] text-[14px] font-rubik font-normal mb-4">
                   Ваши ответы сохранены. Нажмите «Следующий», чтобы перейти к подборке.
                 </p>
-                <Link
+                <Button
+                  variant="primary"
+                  size="md"
                   to="/catalog"
-                  className="inline-block px-5 py-3 bg-primary text-white text-[14px] font-rubik font-semibold rounded-[10px] hover:bg-primary-dark transition-colors"
                 >
                   Смотреть подборку
-                </Link>
+                </Button>
               </div>
             )}
 
@@ -159,22 +161,23 @@ const QuizSection = () => {
 
             {/* Кнопки Назад / Следующий */}
             <div className="flex items-center gap-3">
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="md"
                 onClick={handleBack}
                 disabled={isFirstStep}
-                className="px-5 py-2.5 rounded-[10px] text-[14px] font-rubik font-medium bg-[#E5E7EB] text-[#5a5a5a] disabled:opacity-50 hover:enabled:bg-[#DFDFDF] transition-colors"
+                className="bg-[#E5E7EB] text-[#5a5a5a] border-transparent hover:bg-[#DFDFDF]"
               >
                 Назад
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="primary"
+                size="md"
                 onClick={handleNext}
                 disabled={isLastStep}
-                className="px-5 py-2.5 rounded-[10px] text-[14px] font-rubik font-semibold bg-primary text-white hover:bg-primary-dark transition-colors disabled:opacity-50"
               >
                 Следующий
-              </button>
+              </Button>
             </div>
           </div>
 

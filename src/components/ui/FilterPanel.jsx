@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button, Input } from './index'
 import Checkbox from './Checkbox'
 
 const FilterPanel = () => {
@@ -76,32 +77,41 @@ const FilterPanel = () => {
           Стоимость
         </h4>
         <div className="space-y-3">
-          <input
+          <Input
             type="text"
             placeholder="от"
             value={filters.priceFrom}
             onChange={(e) => setFilters(prev => ({ ...prev, priceFrom: e.target.value }))}
-            className="w-full px-4 py-3 bg-white border-2 border-gray-light rounded-[8px] text-[14px] font-rubik placeholder:text-gray-medium focus:outline-none focus:border-primary transition-colors"
+            size="md"
           />
-          <input
+          <Input
             type="text"
             placeholder="до"
             value={filters.priceTo}
             onChange={(e) => setFilters(prev => ({ ...prev, priceTo: e.target.value }))}
-            className="w-full px-4 py-3 bg-white border-2 border-gray-light rounded-[8px] text-[14px] font-rubik placeholder:text-gray-medium focus:outline-none focus:border-primary transition-colors"
+            size="md"
           />
         </div>
       </div>
 
       {/* Кнопка применить */}
-      <button className="w-full px-6 py-4 bg-primary text-white text-[16px] font-rubik font-semibold rounded-[8px] hover:bg-primary-dark transition-colors shadow-md hover:shadow-lg">
+      <Button 
+        variant="primary" 
+        size="lg" 
+        fullWidth
+      >
         Показать объекты
-      </button>
+      </Button>
 
       {/* Кнопка сбросить */}
-      <button className="w-full mt-3 px-6 py-3 bg-white border-2 border-gray-light text-dark text-[14px] font-rubik font-medium rounded-[8px] hover:border-primary hover:text-primary transition-colors">
+      <Button 
+        variant="secondary" 
+        size="md" 
+        fullWidth
+        className="mt-3"
+      >
         Сбросить фильтры
-      </button>
+      </Button>
     </div>
   )
 }

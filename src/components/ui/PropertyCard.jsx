@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { IconButton } from './index'
 import heartIcon from '../../assets/icons/heart-icon.svg'
 import heartIconFilled from '../../assets/icons/heart-icon-filled.svg'
 
@@ -63,18 +64,20 @@ const PropertyCard = ({ id, image, title, price, location, tags = [] }) => {
         )}
 
         {/* Кнопка «Добавить в избранное» — как в карточках ЖК: без подложки, иконка 22×20 */}
-        <button
-          type="button"
+        <IconButton
+          variant="ghost"
+          size="md"
           onClick={handleToggleFavorite}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-lg transition-colors z-10"
-          aria-label={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
-        >
-          <img
-            src={isFavorite ? heartIconFilled : heartIcon}
-            alt=""
-            className="w-[22px] h-5"
-          />
-        </button>
+          className="absolute top-3 right-3 z-10 bg-transparent hover:bg-white/20"
+          ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+          icon={
+            <img
+              src={isFavorite ? heartIconFilled : heartIcon}
+              alt=""
+              className="w-[22px] h-5"
+            />
+          }
+        />
 
         {/* Градиент снизу */}
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/30 to-transparent"></div>

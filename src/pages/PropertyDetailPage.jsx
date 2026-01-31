@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { Button, Input } from '../components/ui'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
 import PropertyCard from '../components/ui/PropertyCard'
 import propertyCard1 from '../assets/images/property-card-1.svg'
@@ -127,19 +128,26 @@ const PropertyDetailPage = () => {
                 Заинтересовал объект?
               </h3>
               <div className="space-y-3">
-                <input
+                <Input
                   type="text"
                   placeholder="Ваше имя"
-                  className="w-full px-4 py-3 rounded-[8px] text-[14px] font-rubik focus:outline-none focus:ring-2 focus:ring-white/50"
+                  size="md"
+                  className="focus:ring-2 focus:ring-white/50"
                 />
-                <input
+                <Input
                   type="tel"
                   placeholder="Телефон"
-                  className="w-full px-4 py-3 rounded-[8px] text-[14px] font-rubik focus:outline-none focus:ring-2 focus:ring-white/50"
+                  size="md"
+                  className="focus:ring-2 focus:ring-white/50"
                 />
-                <button className="w-full px-6 py-4 bg-white text-primary text-[16px] font-rubik font-semibold rounded-[8px] hover:bg-gray-50 transition-colors">
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
+                  fullWidth
+                  className="bg-white text-primary hover:bg-gray-50 hover:text-primary border-white"
+                >
                   Отправить заявку
-                </button>
+                </Button>
               </div>
             </div>
           </div>

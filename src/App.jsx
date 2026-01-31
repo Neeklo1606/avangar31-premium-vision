@@ -9,6 +9,7 @@ import PropertyDetailPage from './pages/PropertyDetailPage'
 import NewsListPage from './pages/NewsListPage'
 import NewsDetailPage from './pages/NewsDetailPage'
 import MapPage from './pages/MapPage'
+import FavoritesPage from './pages/FavoritesPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="catalog/new-buildings" element={<NewBuildingsCatalogPage />} />
           <Route path="new-building/:id" element={<NewBuildingDetailPage />} />
           <Route path="property/:id" element={<PropertyDetailPage />} />
+          <Route path="favorites" element={<FavoritesPage />} />
           <Route path="news" element={<NewsListPage />} />
           <Route path="news/:id" element={<NewsDetailPage />} />
         </Route>

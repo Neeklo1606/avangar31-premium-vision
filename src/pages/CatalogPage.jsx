@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from '../components/ui'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
 import FilterPanel from '../components/ui/FilterPanel'
 import PropertyCard from '../components/ui/PropertyCard'
@@ -63,9 +64,14 @@ const CatalogPage = () => {
           {/* Правая часть - Карточки */}
           <div className="flex-1">
             {/* Мобильная кнопка фильтров */}
-            <button className="lg:hidden w-full mb-6 px-6 py-4 bg-white border-2 border-gray-light text-dark text-[16px] font-rubik font-semibold rounded-[8px] hover:border-primary transition-colors">
+            <Button 
+              variant="secondary" 
+              size="lg" 
+              fullWidth
+              className="lg:hidden mb-6"
+            >
               Фильтры
-            </button>
+            </Button>
 
             {/* Количество найденных */}
             <div className="mb-6">

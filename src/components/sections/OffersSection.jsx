@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '../ui'
 import PropertyCard from '../ui/PropertyCard'
 import bannerImage from '../../assets/images/banner-catalog.png'
 
@@ -93,9 +94,13 @@ const OffersSection = () => {
                     Еще больше объектов<br />
                     недвижимости в нашем каталоге
                   </p>
-                  <button className="px-8 py-4 bg-white text-dark text-[16px] font-rubik font-semibold rounded-[10px] hover:bg-gray-50 hover:scale-105 transition-all shadow-lg">
+                  <Button 
+                    variant="secondary" 
+                    size="lg"
+                    className="bg-white text-dark hover:bg-gray-50 hover:scale-105 border-white"
+                  >
                     Перейти в каталог
-                  </button>
+                  </Button>
                 </div>
 
                 {/* Изображение внизу */}

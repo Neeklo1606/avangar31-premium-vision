@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Button, IconButton } from '../ui'
 import logo from '../../assets/images/logo-98ba9f.png'
-import userIcon from '../../assets/icons/user-icon.svg'
+import heartIcon from '../../assets/icons/heart-icon.svg'
 import dropdownIcon from '../../assets/icons/dropdown-icon.svg'
 import locationIcon from '../../assets/icons/location-icon.svg'
 
@@ -22,15 +23,18 @@ const DROPDOWN_COLUMNS = [
 
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const mobileMenuRef = useRef(null)
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setIsDropdownOpen(false)
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) setIsMobileMenuOpen(false)
     }
-    if (isDropdownOpen) document.addEventListener('mousedown', handleClickOutside)
+    if (isDropdownOpen || isMobileMenuOpen) document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isDropdownOpen])
+  }, [isDropdownOpen, isMobileMenuOpen])
 
   const navItems = [
     'Новостройки',
@@ -43,53 +47,39 @@ function Header() {
   ]
 
   return (
-    <header className="w-full bg-white border-b border-gray-light/30">
+    <header className="w-full bg-white border-b border-gray-light/30 relative">
       <div className="max-w-[1200px] mx-auto px-4">
-        <div className="flex items-center justify-between h-[80px] lg:h-[90px] gap-4">
-          {/* Логотип */}
-          <div className="flex-shrink-0">
-            <img 
-              src={logo} 
-              alt="Live Grid" 
-              className="h-[45px] lg:h-[55px] w-auto object-contain"
-            />
-          </div>
-
-          {/* Навигация - скрыта на мобильных */}
-          <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
-            {navItems.map((item, index) => (
-              <a
-                key={index}
-                href="#"
-                className="text-dark text-[14px] font-rubik font-normal hover:text-primary transition-colors whitespace-nowrap"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-
-          {/* Правая часть */}
-          <div className="flex items-center gap-3">
-            {/* Кнопка "Все объекты" — по клику открывается меню (Figma node 64-1135) */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                type="button"
+        <div className="flex items-center justify-between h-[80px] gap-4">
+          {/* Левый блок: Логотип + "Все объекты" */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Link to="/">
+              <img 
+                src={logo} 
+                alt="Live Grid" 
+                className="h-[45px] lg:h-[50px] w-auto object-contain cursor-pointer"
+              />
+            </Link>
+            {/* Кнопка "Все объекты" СРАЗУ после логотипа (требование п.1.1) */}
+            <div className="relative hidden lg:block" ref={dropdownRef}>
+              <Button
+                variant="primary"
+                size="md"
                 onClick={() => setIsDropdownOpen((v) => !v)}
+                icon={
+                  <img
+                    src={dropdownIcon}
+                    alt=""
+                    className={`w-3 h-3 brightness-0 invert transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                  />
+                }
+                iconPosition="right"
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="true"
                 aria-controls="header-all-objects-dropdown"
                 id="header-all-objects-button"
-                className="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-primary rounded-[5px] hover:bg-primary-dark transition-colors"
               >
-                <span className="text-white text-[14px] font-rubik font-medium whitespace-nowrap">
-                  Все объекты
-                </span>
-                <img
-                  src={dropdownIcon}
-                  alt=""
-                  className={`w-3 h-3 brightness-0 invert transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
+                Все объекты
+              </Button>
 
               {/* Dropdown — панель по макету Figma 64-1135 */}
               {isDropdownOpen && (
@@ -107,14 +97,17 @@ function Header() {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-[#8E8E8E] text-[14px] font-rubik font-normal">Закрыть</span>
-                      <button
-                        type="button"
+                      <IconButton
+                        variant="primary"
+                        size="md"
                         onClick={() => setIsDropdownOpen(false)}
-                        aria-label="Закрыть"
-                        className="w-9 h-9 flex items-center justify-center bg-primary rounded-[8px] text-white hover:bg-primary-dark transition-colors"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                      </button>
+                        ariaLabel="Закрыть"
+                        icon={
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        }
+                      />
                     </div>
                   </div>
 
@@ -152,9 +145,10 @@ function Header() {
                       <Link
                         to="/#help"
                         onClick={() => setIsDropdownOpen(false)}
-                        className="inline-block px-6 py-3 bg-primary text-white text-[14px] font-rubik font-semibold rounded-[8px] hover:bg-primary-dark transition-colors"
                       >
-                        Подобрать
+                        <Button variant="primary" size="md">
+                          Подобрать
+                        </Button>
                       </Link>
                     </div>
                     <div className="w-32 h-20 rounded-[8px] bg-primary/10 flex items-center justify-center shrink-0">
@@ -165,27 +159,101 @@ function Header() {
               )}
             </div>
 
+          </div>
+
+          {/* Центральное меню (требование п.1.2) */}
+          <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href="#"
+                className="text-dark text-[14px] font-rubik font-normal hover:text-primary transition-colors whitespace-nowrap"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          {/* Правый блок: Избранное + Войти (требование п.1.3) */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Иконка избранного (сердце) - ОБЯЗАТЕЛЬНА по п.1.3 */}
+            <Link to="/favorites" className="hidden lg:block">
+              <IconButton 
+                variant="ghost"
+                size="md"
+                icon={<img src={heartIcon} alt="" className="w-5 h-5" />}
+                ariaLabel="Избранное"
+                className="hover:bg-gray-light/20"
+              />
+            </Link>
+
             {/* Кнопка "Войти" */}
-            <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-light rounded-[5px] hover:border-primary transition-colors">
-              <span className="text-dark text-[14px] font-rubik font-medium">
-                Войти
-              </span>
-            </button>
+            <Button variant="secondary" size="md" className="hidden lg:flex">
+              Войти
+            </Button>
 
-            {/* Иконка пользователя - только на десктопе */}
-            <button className="hidden lg:flex w-10 h-10 items-center justify-center hover:bg-gray-light/20 rounded-full transition-colors">
-              <img src={userIcon} alt="Профиль" className="w-5 h-5" />
-            </button>
+            {/* Мобильные элементы */}
+            <Link to="/favorites" className="lg:hidden">
+              <IconButton 
+                variant="ghost"
+                size="md"
+                icon={<img src={heartIcon} alt="" className="w-5 h-5" />}
+                ariaLabel="Избранное"
+              />
+            </Link>
 
-            {/* Бургер меню - только на мобильных */}
-            <button className="lg:hidden flex flex-col gap-1.5 w-6 h-6 justify-center">
-              <span className="block w-full h-0.5 bg-dark"></span>
-              <span className="block w-full h-0.5 bg-dark"></span>
-              <span className="block w-full h-0.5 bg-dark"></span>
+            {/* Бургер меню - с функционалом (требование п.7.1, пункт 24) */}
+            <button 
+              className="lg:hidden flex flex-col gap-1.5 w-6 h-6 justify-center"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Меню"
+            >
+              <span className={`block w-full h-0.5 bg-dark transition-transform ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+              <span className={`block w-full h-0.5 bg-dark transition-opacity ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+              <span className={`block w-full h-0.5 bg-dark transition-transform ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Мобильное меню (требование п.7.1) */}
+      {isMobileMenuOpen && (
+        <div 
+          ref={mobileMenuRef}
+          className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-light/30 shadow-xl z-50"
+        >
+          <div className="max-w-[1200px] mx-auto px-4 py-4">
+            <nav className="flex flex-col gap-3 mb-4">
+              {navItems.map((item, index) => (
+                <a
+                  key={index}
+                  href="#"
+                  className="text-dark text-[16px] font-rubik font-normal hover:text-primary transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+            <div className="flex flex-col gap-3">
+              <Button 
+                variant="primary" 
+                size="md" 
+                fullWidth
+                onClick={() => {
+                  setIsDropdownOpen(!isDropdownOpen)
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                Все объекты
+              </Button>
+              <Button variant="secondary" size="md" fullWidth>
+                Войти
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

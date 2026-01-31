@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { Button } from '../components/ui'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
 import propertyCard1 from '../assets/images/property-card-1.svg'
 
@@ -92,9 +93,13 @@ const NewBuildingDetailPage = () => {
             </div>
 
             {/* Кнопка связаться */}
-            <button className="w-full px-6 py-4 bg-primary text-white text-[16px] font-rubik font-semibold rounded-[10px] hover:bg-primary-dark transition-colors shadow-md">
+            <Button 
+              variant="primary" 
+              size="lg" 
+              fullWidth
+            >
               Связаться с застройщиком
-            </button>
+            </Button>
           </div>
         </div>
 
