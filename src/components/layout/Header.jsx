@@ -87,7 +87,7 @@ function Header() {
                   id="header-all-objects-dropdown"
                   role="dialog"
                   aria-labelledby="header-all-objects-button"
-                  className="absolute top-full right-0 mt-2 w-[min(95vw,880px)] bg-white rounded-[12px] shadow-2xl border border-gray-light/30 overflow-hidden z-[100]"
+                  className="absolute top-full left-0 mt-2 w-[min(95vw,880px)] bg-white rounded-[12px] shadow-2xl border border-gray-light/30 overflow-hidden z-[100]"
                 >
                   {/* Верхняя строка: локация слева, Закрыть + крестик справа */}
                   <div className="flex items-center justify-between px-5 py-4 border-b border-gray-light/30">
