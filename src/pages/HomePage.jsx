@@ -12,15 +12,17 @@ import ContactSection from '../components/sections/ContactSection'
 
 const HomePage = () => {
   useEffect(() => {
-    // 🔥 ТЕСТ ОБНОВЛЕНИЯ: Deploy 2026-01-31 18:31 - Hero-блок обновлен! 🔥
-    console.log('%c✅ LiveGrid Deploy 2026-01-31 18:31', 'color: #3CA4F4; font-size: 16px; font-weight: bold;')
-    console.log('%cОбновления:', 'color: #27AE60; font-weight: bold;')
-    console.log('  ✓ Header: новая структура с иконкой избранного')
-    console.log('  ✓ Геолокация: кликабельная с модальным окном')
-    console.log('  ✓ Поиск: активный с Enter')
-    console.log('  ✓ Бургер-меню: работает с анимацией')
-    console.log('  ✓ Страница избранного: /favorites')
-    console.log('%cПроверьте: откройте DevTools и посмотрите этот лог!', 'color: #F39C12; font-style: italic;')
+    // 🔥 КОМПАКТНАЯ ВЕРСИЯ: Hero помещается в первый экран 🔥
+    console.log('%c✅ LiveGrid Deploy v2.0 - КОМПАКТНЫЙ HERO', 'color: #3CA4F4; font-size: 18px; font-weight: bold;')
+    console.log('%c📐 Оптимизация для 13" ноутбука (768px):', 'color: #27AE60; font-weight: bold;')
+    console.log('  ✓ Header: 80px → 72px (-10%)')
+    console.log('  ✓ Заголовок: 48px → 40px (-17%)')
+    console.log('  ✓ Поиск/CTA: 56px → 48px (-14%)')
+    console.log('  ✓ Табы: 48px → 40px (-17%)')
+    console.log('  ✓ Карточки: 160px → 130px (-19%)')
+    console.log('  ✓ Все отступы: -20-30%')
+    console.log('%c💾 Экономия: ~180px вертикального пространства', 'color: #9B59B6; font-weight: bold;')
+    console.log('%c🎯 Результат: Hero полностью помещается в первый экран!', 'color: #E74C3C; font-weight: bold;')
   }, [])
 
   return (

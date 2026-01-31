@@ -146,7 +146,7 @@ function Header() {
                         to="/#help"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        <Button variant="primary" size="md">
+                        <Button variant="primary" size="sm">
                           Подобрать
                         </Button>
                       </Link>
@@ -161,34 +161,34 @@ function Header() {
 
           </div>
 
-          {/* Центральное меню (требование п.1.2) */}
-          <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center">
+          {/* Центральное меню (требование п.1.4) */}
+          <nav className="hidden lg:flex items-center gap-5 flex-1 justify-center">
             {navItems.map((item, index) => (
               <a
                 key={index}
                 href="#"
-                className="text-dark text-[14px] font-rubik font-normal hover:text-primary transition-colors whitespace-nowrap"
+                className="text-dark text-[13px] font-rubik font-normal hover:text-primary transition-colors whitespace-nowrap"
               >
                 {item}
               </a>
             ))}
           </nav>
 
-          {/* Правый блок: Избранное + Войти (требование п.1.3) */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Иконка избранного (сердце) - ОБЯЗАТЕЛЬНА по п.1.3 */}
+          {/* Правый блок: Избранное + Войти (требование п.1.5) */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Иконка избранного (сердце) - с видимым stroke */}
             <Link to="/favorites" className="hidden lg:block">
               <IconButton 
                 variant="ghost"
-                size="md"
-                icon={<img src={heartIcon} alt="" className="w-5 h-5" />}
+                size="sm"
+                icon={<img src={heartIcon} alt="" className="w-5 h-5 opacity-70" />}
                 ariaLabel="Избранное"
                 className="hover:bg-gray-light/20"
               />
             </Link>
 
-            {/* Кнопка "Войти" */}
-            <Button variant="secondary" size="md" className="hidden lg:flex">
+            {/* Кнопка "Войти" - компактная */}
+            <Button variant="secondary" size="sm" className="hidden lg:flex">
               Войти
             </Button>
 
@@ -196,8 +196,8 @@ function Header() {
             <Link to="/favorites" className="lg:hidden">
               <IconButton 
                 variant="ghost"
-                size="md"
-                icon={<img src={heartIcon} alt="" className="w-5 h-5" />}
+                size="sm"
+                icon={<img src={heartIcon} alt="" className="w-5 h-5 opacity-70" />}
                 ariaLabel="Избранное"
               />
             </Link>
@@ -235,10 +235,10 @@ function Header() {
                 </a>
               ))}
             </nav>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <Button 
                 variant="primary" 
-                size="md" 
+                size="sm" 
                 fullWidth
                 onClick={() => {
                   setIsDropdownOpen(!isDropdownOpen)
@@ -247,7 +247,7 @@ function Header() {
               >
                 Все объекты
               </Button>
-              <Button variant="secondary" size="md" fullWidth>
+              <Button variant="secondary" size="sm" fullWidth>
                 Войти
               </Button>
             </div>
