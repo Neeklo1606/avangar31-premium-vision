@@ -50,23 +50,21 @@ const SearchSection = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isFilterOpen])
 
-  // Категории — 2 ряда: 5 + 5
+  // Категории: Row1 — 2 wide + 3 narrow, Row2 — 3 narrow + 2 wide
   const categories = [
-    // Ряд 1
-    { image: categoryNovostrojki, title: 'Новостройки' },
-    { image: categoryVtorichnaya, title: 'Вторичная' },
-    { image: categoryArenda, title: 'Аренда' },
-    { image: categoryDoma, title: 'Дома' },
-    { image: categoryUchastki, title: 'Участки' },
-    // Ряд 2
-    { image: categoryIpoteka, title: 'Ипотека' },
-    { image: categoryKvartiry, title: 'Квартиры' },
-    { image: categoryParkingi, title: 'Паркинги' },
-    { image: categoryKommercheskaya, title: 'Коммерческая' },
-    { image: categoryPodobrat, title: 'Подобрать' }
+    { image: categoryNovostrojki, title: 'Новостройки', wide: true },
+    { image: categoryVtorichnaya, title: 'Вторичная недвижимость', wide: true },
+    { image: categoryArenda, title: 'Аренда', wide: false },
+    { image: categoryDoma, title: 'Дома', wide: false },
+    { image: categoryUchastki, title: 'Участки', wide: false },
+    { image: categoryIpoteka, title: 'Ипотека', wide: false },
+    { image: categoryKvartiry, title: 'Квартиры', wide: false },
+    { image: categoryParkingi, title: 'Паркинги', wide: false },
+    { image: categoryKommercheskaya, title: 'Коммерческая недвижимость', wide: true },
+    { image: categoryPodobrat, title: 'Подобрать объект', wide: true },
   ]
 
-  const filterTabs = ['Квартиры', 'Паркинги', 'Дома', 'Участки', 'Коммерция']
+  const filterTabs = ['Квартиры', 'Паркинги', 'Дома с участками', 'Участки', 'Коммерция']
 
   const handleSelectRegion = (region) => {
     setSelectedRegion(region)
@@ -91,90 +89,97 @@ const SearchSection = () => {
   }
 
   return (
-    <section className="w-full bg-white pt-4 pb-6 lg:pt-6 lg:pb-8">
-      <div className="max-w-container mx-auto px-4">
-        
-        {/* Заголовок — компактный, центрированный */}
-        <h1 className="text-center text-dark text-2xl lg:text-4xl font-rubik font-semibold mb-3 lg:mb-4 leading-tight">
-          <span className="text-primary">Live Grid.</span>{' '}
-          <span className="font-normal">Более 100 000 объектов по России</span>
-        </h1>
+    <section className="w-full bg-white flex flex-col min-h-[calc(100vh-4.5rem)] lg:min-h-[calc(100vh-5rem)]">
+      <div className="max-w-container mx-auto px-4 py-6 lg:py-8 flex-1 flex flex-col justify-evenly gap-6 lg:gap-10">
+        {/* Геолокация — отдельный контейнер строго под хедером, слева */}
+        <div className="flex-shrink-0 flex justify-start">
+          <button
+            onClick={() => setIsRegionModalOpen(true)}
+            className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer group"
+          >
+            <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-primary opacity-60 group-hover:opacity-100" aria-hidden>
+              <path d="M7.5 0C3.36473 0 7.63536e-05 3.40955 7.63536e-05 7.59525C-0.0271109 13.718 7.215 18.7948 7.5 19C7.5 19 15.0271 13.718 14.9999 7.6C14.9999 3.40955 11.6353 0 7.5 0ZM7.5 11.4C5.42815 11.4 3.75004 9.6995 3.75004 7.6C3.75004 5.5005 5.42815 3.8 7.5 3.8C9.57186 3.8 11.25 5.5005 11.25 7.6C11.25 9.6995 9.57186 11.4 7.5 11.4Z" fill="currentColor"/>
+            </svg>
+            <span className="text-dark text-sm font-rubik group-hover:text-primary transition-colors">
+              {selectedRegion}
+            </span>
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="opacity-50 group-hover:opacity-100 transition-opacity">
+              <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
 
-        {/* Геолокация — кликабельная */}
-        <button
-          onClick={() => setIsRegionModalOpen(true)}
-          className="flex items-center gap-2 mx-auto mb-4 hover:text-primary transition-colors cursor-pointer group"
-        >
-          <img src={locationIcon} alt="" className="w-4 h-4 opacity-60 group-hover:opacity-100" />
-          <span className="text-dark text-sm font-rubik group-hover:text-primary transition-colors">
-            {selectedRegion}
-          </span>
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="opacity-50 group-hover:opacity-100 transition-opacity">
-            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+        {/* Hero-блок по центру, уже контейнера (max-w-2xl), пропорциональные отступы */}
+        <div className="mx-auto max-w-2xl flex-shrink-0 flex flex-col gap-4 lg:gap-5">
+          {/* Заголовок — по центру, Live Grid. синий italic, остальное bold normal */}
+          <h1 className="text-center text-dark text-xl lg:text-3xl font-rubik font-normal leading-tight">
+            <span className="text-primary italic font-semibold">Live Grid.</span>{' '}
+            <span className="font-bold">Более 100 000 объектов по России</span>
+          </h1>
 
-        {/* Модальное окно региона */}
-        <RegionModal
-          isOpen={isRegionModalOpen}
-          onClose={() => setIsRegionModalOpen(false)}
-          currentRegion={selectedRegion}
-          onSelectRegion={handleSelectRegion}
-        />
+          {/* Модальное окно региона */}
+          <RegionModal
+            isOpen={isRegionModalOpen}
+            onClose={() => setIsRegionModalOpen(false)}
+            currentRegion={selectedRegion}
+            onSelectRegion={handleSelectRegion}
+          />
 
-        {/* Строка поиска + CTA */}
-        <div className="relative mb-4" ref={filterRef}>
-          <div className="flex flex-col lg:flex-row gap-2 lg:gap-3">
-            {/* Поле поиска */}
-            <Input
-              size="md"
-              placeholder="Поиск по адресу, ЖК или застройщику..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleSearchKeyPress}
-              icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
-              iconPosition="left"
-              className="flex-1"
-              rightElement={
-                <IconButton
-                  variant="primary"
-                  size="sm"
-                  onClick={() => setIsFilterOpen((v) => !v)}
-                  ariaLabel="Фильтры"
-                  className={isFilterOpen ? 'ring-2 ring-primary ring-offset-1' : ''}
-                  icon={
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                      <path d="M3 5h14M5 10h10M7 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  }
-                />
-              }
-            />
+          {/* Строка поиска + CTA — по центру, input с лупой слева, кнопка фильтра квадратная, CTA одна высота с input */}
+          <div className="relative" ref={filterRef}>
+            <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 items-stretch lg:items-center">
+              {/* Поле поиска — иконка лупы слева, placeholder по макету */}
+              <div className="flex-1 min-w-0">
+                <Input
+                  size="md"
+                  placeholder="Поиск по сайту"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleSearchKeyPress}
+                icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
+                iconPosition="left"
+                className="w-full"
+                rightElement={
+                  <IconButton
+                    variant="primary"
+                    size="sm"
+                    className={`w-9 h-9 min-w-[36px] ${isFilterOpen ? 'ring-2 ring-primary ring-offset-1' : ''}`}
+                    onClick={() => setIsFilterOpen((v) => !v)}
+                    ariaLabel="Фильтры"
+                    icon={
+                      <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 5h14M5 10h10M7 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    }
+                  />
+                }
+              />
+            </div>
 
-            {/* CTA кнопка */}
+            {/* CTA — одинаковая высота с input (~44px), радиус 8px */}
             <Button 
               variant="primary" 
               size="md"
-              className="w-full lg:w-auto flex-shrink-0 lg:min-w-[200px]"
+              className="w-full lg:w-auto flex-shrink-0 lg:min-w-[200px] h-11 rounded-md"
               onClick={handleSearch}
             >
               Показать 121 563 объекта
             </Button>
-          </div>
+            </div>
 
-          {/* Панель фильтров */}
-          {isFilterOpen && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-lg border border-gray-light/40 bg-white p-5 shadow-lg animate-slideUp">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-dark text-base font-rubik font-semibold">Фильтры</h3>
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="text-gray-medium hover:text-dark text-sm font-rubik transition-colors"
-                >
-                  Закрыть
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            {/* Панель фильтров */}
+            {isFilterOpen && (
+              <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-lg border border-gray-light/40 bg-white p-5 shadow-lg animate-slideUp">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-dark text-base font-rubik font-semibold">Фильтры</h3>
+                  <button
+                    onClick={() => setIsFilterOpen(false)}
+                    className="text-gray-medium hover:text-dark text-sm font-rubik transition-colors"
+                  >
+                    Закрыть
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-gray-medium text-xs font-rubik font-medium mb-1.5">Тип объекта</label>
                   <select className="w-full h-10 px-3 border border-gray-light rounded-md text-sm font-rubik focus:outline-none focus:border-primary transition-colors">
@@ -203,41 +208,43 @@ const SearchSection = () => {
                   </select>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-end gap-2">
-                <Button variant="secondary" size="sm" onClick={() => setIsFilterOpen(false)}>
-                  Сбросить
-                </Button>
-                <Button variant="primary" size="sm" onClick={() => setIsFilterOpen(false)}>
-                  Применить
-                </Button>
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <Button variant="secondary" size="sm" onClick={() => setIsFilterOpen(false)}>
+                    Сбросить
+                  </Button>
+                  <Button variant="primary" size="sm" onClick={() => setIsFilterOpen(false)}>
+                    Применить
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+
+          {/* Табы — по ширине контейнера поиска, минимальные отступы, равномерно */}
+          <TabGroup layout="distribute">
+            {filterTabs.map((tab, index) => (
+              <Tab
+                key={index}
+                active={activeTab === index}
+                onClick={() => setActiveTab(index)}
+                size="xs"
+                className="w-full"
+              >
+                {tab}
+              </Tab>
+            ))}
+          </TabGroup>
         </div>
 
-        {/* Табы фильтров — унифицированные */}
-        <TabGroup className="mb-4 justify-center">
-          {filterTabs.map((tab, index) => (
-            <Tab
-              key={index}
-              active={activeTab === index}
-              onClick={() => setActiveTab(index)}
-              size="sm"
-            >
-              {tab}
-            </Tab>
-          ))}
-        </TabGroup>
-
-        {/* Сетка категорий: 5 колонок на desktop, 2 на mobile */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-3">
+        {/* Сетка категорий — на всю ширину контейнера, пропорциональные отступы */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2 lg:gap-3 auto-rows-fr flex-shrink-0 min-h-0">
           {categories.map((category, index) => (
             <CategoryCard
               key={index}
               image={category.image}
               title={category.title}
               onClick={() => handleCategoryClick(category)}
-              className="aspect-[4/3] lg:aspect-[1/1]"
+              className={category.wide ? 'lg:col-span-2' : 'lg:col-span-1'}
             />
           ))}
         </div>

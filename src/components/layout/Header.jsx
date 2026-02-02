@@ -69,10 +69,10 @@ function Header() {
   return (
     <header className="w-full bg-white border-b border-gray-light/40 sticky top-0 z-50">
       <div className="max-w-container mx-auto px-4">
-        <div className="flex items-center h-[72px] lg:h-[80px]">
+        <div className="flex items-center gap-4 h-[72px] lg:h-[80px]">
           
-          {/* Левый блок: Логотип */}
-          <Link to="/" className="flex-shrink-0 mr-4 lg:mr-6">
+          {/* Левый блок: Логотип + кнопка «Все объекты» с gap */}
+          <Link to="/" className="flex-shrink-0">
             <img 
               src={logo} 
               alt="Live Grid" 
@@ -80,25 +80,32 @@ function Header() {
             />
           </Link>
 
-          {/* Кнопка «Все объекты» — отступ от логотипа */}
+          {/* Кнопка «Все объекты» — синий фон #4DB7FF, иконка grid слева, dropdown стрелка справа, padding 12px 20px, radius 8px */}
           <div className="relative hidden lg:block" ref={dropdownRef}>
-            <Button
-              variant="primary"
-              size="sm"
+            <button
+              type="button"
               onClick={() => setIsDropdownOpen((v) => !v)}
-              icon={
-                <svg 
-                  className={`w-3 h-3 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                  viewBox="0 0 12 12" 
-                  fill="none"
-                >
-                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              }
-              iconPosition="right"
+              className="inline-flex items-center justify-center gap-2 font-rubik font-semibold text-sm text-white rounded-md transition-all duration-200 hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#4DB7FF]"
+              style={{ backgroundColor: '#4DB7FF', padding: '12px 20px', borderRadius: 8 }}
             >
-              Все объекты
-            </Button>
+              {/* Иконка grid (4 квадрата) слева */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 text-white" aria-hidden>
+                <rect x="3" y="3" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="13" y="3" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="3" y="13" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="13" y="13" width="8" height="8" rx="1" fill="currentColor" />
+              </svg>
+              <span>Все объекты</span>
+              {/* Dropdown стрелка справа */}
+              <svg
+                className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden
+              >
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
             {/* Dropdown панель */}
             {isDropdownOpen && (
@@ -159,7 +166,7 @@ function Header() {
           </div>
 
           {/* Центральная навигация */}
-          <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center ml-6">
+          <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">
             {NAV_ITEMS.map((item, index) => (
               <Link
                 key={index}
@@ -173,13 +180,13 @@ function Header() {
 
           {/* Правый блок: Избранное + Войти */}
           <div className="flex items-center gap-2 ml-auto">
-            {/* Desktop: Избранное */}
-            <Link to="/favorites" className="hidden lg:block">
+            {/* Desktop: Избранное — чёрное outline-сердце на белом фоне */}
+            <Link to="/favorites" className="hidden lg:block text-dark">
               <IconButton 
                 variant="ghost"
                 size="md"
                 icon={
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-dark">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 }
@@ -187,18 +194,18 @@ function Header() {
               />
             </Link>
 
-            {/* Desktop: Войти */}
-            <Button variant="primary" size="sm" className="hidden lg:flex">
+            {/* Desktop: Войти — primary синяя, высота ~40px */}
+            <Button variant="primary" size="sm" className="hidden lg:flex h-10">
               Войти
             </Button>
 
-            {/* Mobile: Избранное */}
-            <Link to="/favorites" className="lg:hidden">
+            {/* Mobile: Избранное — чёрное outline-сердце */}
+            <Link to="/favorites" className="lg:hidden text-dark">
               <IconButton 
                 variant="ghost"
                 size="md"
                 icon={
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-dark">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 }
@@ -206,11 +213,12 @@ function Header() {
               />
             </Link>
 
-            {/* Бургер меню */}
+            {/* Бургер меню — mobile header */}
             <button 
               className="lg:hidden flex flex-col gap-1 w-8 h-8 items-center justify-center rounded-md hover:bg-gray-100 transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Меню"
+              aria-expanded={isMobileMenuOpen}
             >
               <span className={`block w-5 h-0.5 bg-dark transition-all duration-200 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
               <span className={`block w-5 h-0.5 bg-dark transition-all duration-200 ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
