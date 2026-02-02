@@ -1,8 +1,8 @@
 import React from 'react'
 
 /**
- * Единый компонент IconButton (кнопка только с иконкой) для всего проекта
- * Обеспечивает консистентность UI
+ * Унифицированный компонент IconButton
+ * Единые размеры для всех иконочных кнопок
  */
 const IconButton = ({
   children,
@@ -15,36 +15,27 @@ const IconButton = ({
   ariaLabel,
   ...props
 }) => {
-  // Размеры иконочных кнопок (ЕДИНЫЕ для всего проекта)
+  // Размеры (КВАДРАТНЫЕ, унифицированные)
   const sizes = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
-    lg: 'w-12 h-12',
+    sm: 'w-9 h-9',   // 36px
+    md: 'w-10 h-10', // 40px
+    lg: 'w-11 h-11', // 44px
   }
 
   // Варианты стилей
   const variants = {
-    default: 'bg-transparent hover:bg-gray-light/20 text-dark',
-    primary: 'bg-primary hover:bg-primary-dark text-white',
-    secondary: 'bg-white border-2 border-gray-light hover:border-primary text-dark',
-    ghost: 'bg-transparent hover:bg-gray-light/10 text-gray-medium hover:text-primary',
+    default: 'bg-transparent hover:bg-gray-100 text-dark',
+    primary: 'bg-primary hover:bg-primary-hover text-white',
+    secondary: 'bg-white border border-gray-light hover:border-primary text-dark',
+    ghost: 'bg-transparent hover:bg-gray-50 text-gray-medium hover:text-primary',
   }
 
-  // Базовые стили
   const baseStyles = `
-    inline-flex 
-    items-center 
-    justify-center 
-    rounded-[8px] 
-    transition-all 
-    duration-300 
+    inline-flex items-center justify-center
+    rounded-md transition-all duration-200
     cursor-pointer
-    disabled:opacity-50 
-    disabled:cursor-not-allowed
-    focus:outline-none 
-    focus:ring-2 
-    focus:ring-primary 
-    focus:ring-offset-2
+    disabled:opacity-50 disabled:cursor-not-allowed
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
     ${sizes[size] || sizes.md}
     ${variants[variant] || variants.default}
     ${className}

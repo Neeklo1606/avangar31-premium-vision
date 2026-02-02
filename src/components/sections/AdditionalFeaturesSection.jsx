@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '../ui'
 
-// Медиа блока «Дополнительные возможности» — Figma node 98-2407 (иконки карточек)
 const FEATURE_IMAGES = {
   mortgage: '/images/features-mortgage.png',
   selection: '/images/features-selection.png',
@@ -34,7 +34,7 @@ const features = [
   {
     key: 'cabinet',
     title: 'Ваш личный кабинет',
-    buttonText: 'Войти / Зарегистрироваться',
+    buttonText: 'Войти',
     to: '/#register',
     image: FEATURE_IMAGES.cabinet,
   },
@@ -42,41 +42,34 @@ const features = [
 
 const AdditionalFeaturesSection = () => {
   return (
-    <section className="w-full bg-white py-10 lg:py-16">
-      <div className="max-w-[1200px] mx-auto px-4 lg:px-[60px]">
-        <h2 className="text-[#000000] text-[32px] lg:text-[44px] font-rubik font-bold mb-8 lg:mb-12">
+    <section className="w-full bg-white py-8 lg:py-10">
+      <div className="max-w-container mx-auto px-4">
+        <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold mb-5 lg:mb-6">
           Дополнительные возможности
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {features.map((item) => (
             <div
               key={item.key}
-              className="bg-[#F5F6FC] rounded-[16px] p-6 lg:p-8 flex flex-col items-center text-center min-h-[280px]"
+              className="bg-gray-50 rounded-lg p-5 flex flex-col items-center text-center min-h-[240px]"
             >
-              <div className="flex-1 flex items-center justify-center mb-5 min-h-[120px]">
+              <div className="flex-1 flex items-center justify-center mb-4 min-h-[100px]">
                 <img
                   src={item.image}
                   alt=""
-                  className="max-w-full max-h-[120px] w-auto h-auto object-contain"
+                  className="max-w-full max-h-[100px] w-auto h-auto object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none'
-                    e.target.nextElementSibling?.classList.remove('hidden')
                   }}
                 />
-                <div className="hidden w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-2xl font-bold" aria-hidden>
-                  {item.title.charAt(0)}
-                </div>
               </div>
-              <h3 className="text-[#000000] text-[18px] lg:text-[20px] font-rubik font-semibold mb-4 leading-tight">
+              <h3 className="text-dark text-base font-rubik font-semibold mb-3">
                 {item.title}
               </h3>
-              <Link
-                to={item.to}
-                className="w-full min-h-[44px] px-5 flex items-center justify-center bg-primary text-white text-[14px] font-rubik font-medium rounded-[8px] hover:bg-primary-dark transition-colors"
-              >
+              <Button variant="primary" size="sm" to={item.to} fullWidth>
                 {item.buttonText}
-              </Link>
+              </Button>
             </div>
           ))}
         </div>

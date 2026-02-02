@@ -1,8 +1,8 @@
 import React from 'react'
 
 /**
- * Единый компонент поля ввода для всего проекта
- * Обеспечивает консистентность UI
+ * Унифицированный компонент Input
+ * Единые размеры, стили для всех полей ввода
  */
 const Input = ({
   type = 'text',
@@ -11,6 +11,7 @@ const Input = ({
   onChange,
   onFocus,
   onBlur,
+  onKeyPress,
   disabled = false,
   error = false,
   errorMessage,
@@ -22,35 +23,29 @@ const Input = ({
   fullWidth = true,
   ...props
 }) => {
-  // Размеры полей (ЕДИНЫЕ для всего проекта)
+  // Размеры (СТРОГО УНИФИЦИРОВАННЫЕ - равны размерам кнопок)
   const sizes = {
-    sm: 'h-[40px] px-4 text-[13px]',
-    md: 'h-[48px] px-5 text-[14px]',
-    lg: 'h-[56px] px-5 text-[16px]',
+    sm: 'h-10 px-4 text-sm',    // 40px
+    md: 'h-11 px-4 text-base',  // 44px
+    lg: 'h-12 px-5 text-lg',    // 48px
   }
 
   // Отступы для иконок
   const iconPadding = {
-    left: icon ? 'pl-12' : '',
+    left: icon && iconPosition === 'left' ? 'pl-11' : '',
     right: rightElement ? 'pr-12' : '',
   }
 
-  // Базовые стили
   const baseStyles = `
-    bg-white 
-    border-2 border-gray-light 
-    rounded-[8px] 
-    font-rubik 
-    placeholder:text-gray-medium 
-    focus:outline-none 
-    focus:border-primary 
-    transition-colors
-    disabled:bg-gray-50 
-    disabled:cursor-not-allowed
-    ${error ? 'border-red-500 focus:border-red-500' : ''}
+    bg-white border border-gray-light rounded-md
+    font-rubik placeholder:text-gray-medium
+    focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary
+    transition-all duration-200
+    disabled:bg-gray-50 disabled:cursor-not-allowed
+    ${error ? 'border-error focus:border-error focus:ring-error' : ''}
     ${sizes[size] || sizes.md}
-    ${icon && iconPosition === 'left' ? iconPadding.left : ''}
-    ${rightElement ? iconPadding.right : ''}
+    ${iconPadding.left}
+    ${iconPadding.right}
     ${fullWidth ? 'w-full' : ''}
     ${className}
   `.trim().replace(/\s+/g, ' ')
@@ -59,7 +54,7 @@ const Input = ({
     <div className={`relative ${fullWidth ? 'w-full' : ''}`}>
       {/* Иконка слева */}
       {icon && iconPosition === 'left' && (
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-40 pointer-events-none">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-50 pointer-events-none">
           {icon}
         </div>
       )}
@@ -72,28 +67,29 @@ const Input = ({
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyPress={onKeyPress}
         disabled={disabled}
         className={baseStyles}
         {...props}
       />
 
-      {/* Правый элемент (например, кнопка) */}
+      {/* Правый элемент */}
       {rightElement && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center">
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center">
           {rightElement}
         </div>
       )}
 
       {/* Иконка справа */}
       {icon && iconPosition === 'right' && !rightElement && (
-        <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-40 pointer-events-none">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-50 pointer-events-none">
           {icon}
         </div>
       )}
 
       {/* Сообщение об ошибке */}
       {error && errorMessage && (
-        <p className="mt-1.5 text-red-500 text-[12px] font-rubik">
+        <p className="mt-1.5 text-error text-xs font-rubik">
           {errorMessage}
         </p>
       )}

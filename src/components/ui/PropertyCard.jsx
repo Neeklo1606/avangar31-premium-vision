@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { IconButton } from './index'
-import heartIcon from '../../assets/icons/heart-icon.svg'
-import heartIconFilled from '../../assets/icons/heart-icon-filled.svg'
 
-const FAVORITES_STORAGE_KEY = 'trendagent_favorites_property'
+const FAVORITES_STORAGE_KEY = 'livegrid_favorites_property'
 
 function getStoredFavorites() {
   try {
@@ -20,7 +19,10 @@ function setStoredFavorites(ids) {
   } catch {}
 }
 
-const PropertyCard = ({ id, image, title, price, location, tags = [] }) => {
+/**
+ * Унифицированная карточка объекта недвижимости
+ */
+const PropertyCard = ({ id, image, title, price, location, tags = [], href }) => {
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const PropertyCard = ({ id, image, title, price, location, tags = [] }) => {
   }, [id])
 
   const handleToggleFavorite = (e) => {
+    e.preventDefault()
     e.stopPropagation()
     if (id == null) return
     const ids = getStoredFavorites()
@@ -39,69 +42,81 @@ const PropertyCard = ({ id, image, title, price, location, tags = [] }) => {
     setIsFavorite(next.includes(key))
   }
 
+  const CardWrapper = href ? Link : 'div'
+  const cardProps = href ? { to: href } : {}
+
   return (
-    <div className="relative bg-white rounded-[12px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-light/20">
+    <CardWrapper
+      {...cardProps}
+      className="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group border border-gray-light/30 block"
+    >
       {/* Изображение */}
-      <div className="relative w-full h-[200px] overflow-hidden">
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-50">
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         
-        {/* Бейджи - ГОРИЗОНТАЛЬНО (требование п.3.2.2) */}
+        {/* Бейджи */}
         {tags.length > 0 && (
-          <div className="absolute top-3 left-3 flex flex-row gap-2 z-10">
-            {tags.map((tag, index) => (
-              <div
+          <div className="absolute top-2 left-2 flex flex-wrap gap-1 z-10">
+            {tags.slice(0, 2).map((tag, index) => (
+              <span
                 key={index}
-                className="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-[10px] font-rubik font-medium text-dark shadow-md whitespace-nowrap"
+                className="px-2 py-1 bg-white/95 backdrop-blur-sm rounded-md text-xs font-rubik font-medium text-dark shadow-sm"
               >
                 {tag}
-              </div>
+              </span>
             ))}
           </div>
         )}
 
-        {/* Кнопка «Добавить в избранное» (требование п.3.4) */}
+        {/* Кнопка избранного */}
         <IconButton
           variant="ghost"
-          size="md"
+          size="sm"
           onClick={handleToggleFavorite}
-          className="absolute top-3 right-3 z-10 bg-transparent hover:bg-white/30 transition-colors"
+          className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white shadow-sm"
           ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
           icon={
-            <img
-              src={isFavorite ? heartIconFilled : heartIcon}
-              alt=""
-              className="w-5 h-5"
-            />
+            <svg 
+              width="18" 
+              height="18" 
+              viewBox="0 0 24 24" 
+              fill={isFavorite ? 'currentColor' : 'none'} 
+              stroke="currentColor" 
+              strokeWidth="1.5"
+              className={isFavorite ? 'text-error' : 'text-dark'}
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           }
         />
 
         {/* Градиент снизу */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/30 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
       </div>
 
-      {/* Информация (требование п.3.5) */}
-      <div className="p-4 space-y-2">
+      {/* Информация */}
+      <div className="p-3 space-y-1.5">
         {/* Заголовок */}
-        <h3 className="text-dark text-[14px] font-rubik font-semibold leading-snug line-clamp-2">
+        <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2">
           {title}
         </h3>
 
         {/* Цена */}
-        <p className="text-dark text-[18px] lg:text-[20px] font-rubik font-bold">
+        <p className="text-dark text-lg font-rubik font-bold">
           {price}
         </p>
 
         {/* Локация */}
-        <p className="text-gray-medium text-[12px] font-rubik font-normal flex items-center gap-1.5 truncate">
-          <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0"></span>
+        <p className="text-gray-medium text-xs font-rubik flex items-center gap-1.5 truncate">
+          <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
           {location}
         </p>
       </div>
-    </div>
+    </CardWrapper>
   )
 }
 
