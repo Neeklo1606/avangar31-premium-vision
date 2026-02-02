@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-// Медиа блока «Последние новости» — Figma node 98-2432 (карточки новостей)
 const NEWS_IMAGES = []
 for (let i = 1; i <= 8; i++) {
   NEWS_IMAGES.push(`/images/news-card-${i}.png`)
@@ -15,16 +14,13 @@ const defaultNews = [
     excerpt: 'Известный застройщик открывает продажи нового комплекса, успейте приобрести по первым ценам',
     date: '16.01.26',
     badgeTopLeft: 'НОВЫЕ СЕЗОНЫ 2',
-    badgeTopLeftSub: 'МЕЧТА НОВОСЁЛОВ',
     badgeTopRight: 'СТАРТ ПРОДАЖ',
-    centerLeft: 'РЕМОНТ',
-    centerRight: 'В ПОДАРОК',
   },
 ]
 
 const LatestNewsSection = () => {
   const newsItems = []
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 4; i++) {
     const base = defaultNews[0]
     newsItems.push({
       ...base,
@@ -34,71 +30,57 @@ const LatestNewsSection = () => {
   }
 
   return (
-    <section className="w-full bg-white py-10 lg:py-16">
-      <div className="max-w-[1200px] mx-auto px-4 lg:px-[60px]">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 lg:mb-10">
-          <h2 className="text-[#000000] text-[32px] lg:text-[44px] font-rubik font-bold">
+    <section className="w-full bg-white py-8 lg:py-10">
+      <div className="max-w-container mx-auto px-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-5 lg:mb-6">
+          <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold">
             Последние новости
           </h2>
           <Link
             to="/news"
-            className="text-primary text-[16px] font-rubik font-medium hover:underline shrink-0"
+            className="text-primary text-sm font-rubik font-medium hover:underline"
           >
             Все новости
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {newsItems.map((item) => (
-            <article key={item.id} className="bg-white rounded-[16px] overflow-hidden shadow-lg border border-gray-light/20 hover:shadow-xl transition-shadow">
+            <article key={item.id} className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-light/30 hover:shadow-md transition-shadow">
               <Link to={`/news/${item.id}`} className="block group">
-                {/* Область изображения с оверлеями по макету */}
-                <div className="relative w-full h-[220px] overflow-hidden">
+                <div className="relative w-full aspect-[4/3] overflow-hidden">
                   <img
                     src={item.image}
                     alt=""
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                  {/* Сверху слева: синий баннер + подзаголовок */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-0.5">
-                    <span className="px-3 py-1.5 bg-primary text-white text-[10px] lg:text-[11px] font-rubik font-semibold rounded uppercase tracking-wide">
+                  
+                  {/* Бейджи */}
+                  <div className="absolute top-2 left-2">
+                    <span className="px-2 py-1 bg-primary text-white text-xs font-rubik font-medium rounded">
                       {item.badgeTopLeft}
                     </span>
-                    <span className="text-white text-[10px] font-rubik font-normal opacity-95">
-                      {item.badgeTopLeftSub}
-                    </span>
                   </div>
-                  {/* Сверху справа: красный баннер СТАРТ ПРОДАЖ */}
-                  <div className="absolute top-3 right-3">
-                    <span className="px-3 py-1.5 bg-red-600 text-white text-[10px] lg:text-[11px] font-rubik font-semibold rounded uppercase tracking-wide">
+                  <div className="absolute top-2 right-2">
+                    <span className="px-2 py-1 bg-error text-white text-xs font-rubik font-medium rounded">
                       {item.badgeTopRight}
-                    </span>
-                  </div>
-                  {/* По центру слева/справа: РЕМОНТ / В ПОДАРОК */}
-                  <div className="absolute inset-0 flex items-center justify-between px-3 pointer-events-none">
-                    <span className="text-white text-[18px] lg:text-[22px] font-rubik font-bold drop-shadow-lg">
-                      {item.centerLeft}
-                    </span>
-                    <span className="text-white text-[18px] lg:text-[22px] font-rubik font-bold drop-shadow-lg">
-                      {item.centerRight}
                     </span>
                   </div>
                 </div>
 
-                {/* Текст под изображением */}
-                <div className="p-4 lg:p-5">
-                  <h3 className="text-[#000000] text-[15px] lg:text-[16px] font-rubik font-bold leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+                <div className="p-3">
+                  <h3 className="text-dark text-sm font-rubik font-semibold leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-[#8E8E8E] text-[13px] font-rubik font-normal leading-relaxed line-clamp-2 mb-4">
+                  <p className="text-gray-medium text-xs font-rubik line-clamp-2 mb-3">
                     {item.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-primary text-[13px] font-rubik font-semibold hover:underline">
+                    <span className="text-primary text-xs font-rubik font-medium">
                       Подробнее
                     </span>
-                    <span className="text-[#8E8E8E] text-[13px] font-rubik font-normal">
+                    <span className="text-gray-medium text-xs font-rubik">
                       {item.date}
                     </span>
                   </div>

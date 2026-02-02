@@ -14,101 +14,109 @@ import propertyCard6 from '../../assets/images/property-card-6.svg'
 const OffersSection = () => {
   const properties = [
     {
+      id: 1,
       image: propertyCard1,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     },
     {
+      id: 2,
       image: propertyCard2,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     },
     {
+      id: 3,
       image: propertyCard3,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     },
     {
+      id: 4,
       image: propertyCard4,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     },
     {
+      id: 5,
       image: propertyCard5,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     },
     {
+      id: 6,
       image: propertyCard6,
-      title: 'Дом 125 м.кв. 3 комнаты',
-      price: '15 600 000',
+      title: 'Дом 125 м² — 3 комнаты',
+      price: '15 600 000 ₽',
       location: 'Москва, Кантемировская',
       tags: ['Распродажа', 'Ипотека 6%']
     }
   ]
 
   return (
-    <section className="w-full bg-white py-8 lg:py-12">
-      <div className="max-w-[1200px] mx-auto px-4">
-        {/* Заголовок (требование п.2.1) */}
-        <h2 className="text-dark text-[28px] lg:text-[36px] font-rubik font-semibold mb-6 lg:mb-8">
+    <section className="w-full bg-white py-8 lg:py-10">
+      <div className="max-w-container mx-auto px-4">
+        {/* Заголовок */}
+        <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-semibold mb-5 lg:mb-6">
           Новые объявления
         </h2>
 
-        {/* Контейнер с карточками и баннером (требование п.1.1, п.1.2) */}
-        <div className="flex flex-col lg:flex-row gap-5">
+        {/* Контейнер с карточками и баннером */}
+        <div className="flex flex-col lg:flex-row gap-4">
           {/* Левая часть: 6 карточек в 3 колонки */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {properties.map((property, index) => (
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+            {properties.map((property) => (
               <PropertyCard
-                key={index}
+                key={property.id}
+                id={property.id}
                 image={property.image}
                 title={property.title}
                 price={property.price}
                 location={property.location}
                 tags={property.tags}
+                href={`/property/${property.id}`}
               />
             ))}
           </div>
 
-          {/* Правая часть: Промо-карта (требование п.4) */}
-          <div className="lg:w-[360px] flex-shrink-0">
-            <div className="relative bg-primary rounded-[16px] overflow-hidden shadow-xl h-full">
-              <div className="h-full flex flex-col justify-between p-6 lg:p-7">
-                {/* Текст и кнопка */}
-                <div className="space-y-5">
-                  <h3 className="text-white text-[32px] lg:text-[40px] font-rubik font-bold leading-tight">
-                    100 000 +<br />объектов
+          {/* Правая часть: Промо-карта */}
+          <div className="lg:w-[320px] flex-shrink-0">
+            <div className="relative bg-primary rounded-lg overflow-hidden shadow-md h-full min-h-[280px]">
+              <div className="h-full flex flex-col justify-between p-5">
+                <div className="space-y-4">
+                  <h3 className="text-white text-3xl lg:text-4xl font-rubik font-bold leading-tight">
+                    100 000+<br />объектов
                   </h3>
-                  <p className="text-white text-[14px] font-rubik font-normal leading-relaxed opacity-90">
+                  <p className="text-white/90 text-sm font-rubik">
                     Еще больше объектов<br />
                     недвижимости в нашем каталоге
                   </p>
                   <Button 
                     variant="secondary" 
                     size="md"
-                    className="bg-white text-dark hover:bg-gray-50 hover:scale-[1.02] border-white shadow-lg"
+                    className="bg-white text-dark hover:bg-gray-50 border-white shadow-sm"
+                    to="/catalog"
                   >
                     Перейти в каталог
                   </Button>
                 </div>
 
-                {/* Изображение внизу (требование п.4.2.4) */}
+                {/* Изображение */}
                 <div className="hidden lg:block mt-4">
                   <img
                     src={bannerImage}
                     alt="Каталог недвижимости"
-                    className="w-full h-[140px] object-cover object-bottom rounded-[8px]"
+                    className="w-full h-[120px] object-cover object-bottom rounded-md"
                   />
                 </div>
               </div>

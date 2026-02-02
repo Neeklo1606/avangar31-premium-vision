@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, IconButton } from './index'
 
 /**
- * Модальное окно выбора региона (требование п.2, пункты 9-11)
+ * Модальное окно выбора региона
  */
 const RegionModal = ({ isOpen, onClose, currentRegion, onSelectRegion }) => {
   const [selectedRegion, setSelectedRegion] = useState(currentRegion)
@@ -31,6 +31,10 @@ const RegionModal = ({ isOpen, onClose, currentRegion, onSelectRegion }) => {
     }
   }, [isOpen])
 
+  useEffect(() => {
+    setSelectedRegion(currentRegion)
+  }, [currentRegion])
+
   if (!isOpen) return null
 
   const handleConfirm = () => {
@@ -42,43 +46,45 @@ const RegionModal = ({ isOpen, onClose, currentRegion, onSelectRegion }) => {
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 z-[200]"
+        className="fixed inset-0 bg-black/40 z-[200] animate-fadeIn"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div className="fixed inset-0 z-[201] flex items-center justify-center p-4">
-        <div className="bg-white rounded-[12px] max-w-[500px] w-full shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-lg max-w-md w-full shadow-xl overflow-hidden animate-scaleIn">
           {/* Header */}
-          <div className="flex items-center justify-between p-5 border-b border-gray-light">
-            <h3 className="text-dark text-[20px] font-rubik font-bold">
+          <div className="flex items-center justify-between p-4 border-b border-gray-light/40">
+            <h3 className="text-dark text-lg font-rubik font-semibold">
               Выберите регион
             </h3>
             <IconButton
               variant="ghost"
-              size="md"
+              size="sm"
               onClick={onClose}
               ariaLabel="Закрыть"
               icon={
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               }
             />
           </div>
 
           {/* Content */}
-          <div className="p-5 max-h-[60vh] overflow-y-auto">
-            <div className="space-y-2">
+          <div className="p-4 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-1">
               {regions.map((region) => (
                 <button
                   key={region}
                   onClick={() => setSelectedRegion(region)}
-                  className={`w-full text-left px-4 py-3 rounded-[8px] font-rubik text-[15px] transition-colors ${
-                    selectedRegion === region
+                  className={`
+                    w-full text-left px-4 py-3 rounded-md font-rubik text-sm transition-all duration-200
+                    ${selectedRegion === region
                       ? 'bg-primary text-white'
                       : 'bg-gray-50 text-dark hover:bg-gray-100'
-                  }`}
+                    }
+                  `}
                 >
                   {region}
                 </button>
@@ -87,9 +93,9 @@ const RegionModal = ({ isOpen, onClose, currentRegion, onSelectRegion }) => {
           </div>
 
           {/* Footer */}
-          <div className="flex gap-3 p-5 border-t border-gray-light">
+          <div className="flex gap-3 p-4 border-t border-gray-light/40">
             <Button
-              variant="outline"
+              variant="secondary"
               size="md"
               onClick={onClose}
               className="flex-1"

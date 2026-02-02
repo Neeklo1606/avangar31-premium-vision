@@ -1,8 +1,8 @@
 import React from 'react'
 
 /**
- * Единый компонент Tab (переключатель) для всего проекта
- * Обеспечивает консистентность UI
+ * Унифицированный компонент Tab
+ * Единые размеры, стили для всех табов проекта
  */
 const Tab = ({ 
   active = false, 
@@ -11,32 +11,25 @@ const Tab = ({
   size = 'md',
   className = '' 
 }) => {
-  // Размеры табов (ЕДИНЫЕ для всего проекта)
+  // Размеры (СТРОГО УНИФИЦИРОВАННЫЕ)
   const sizes = {
-    sm: 'px-4 py-2 text-[13px]',
-    md: 'px-6 py-3 text-[14px]',
-    lg: 'px-8 py-4 text-[16px]',
+    sm: 'h-9 px-4 text-sm',    // 36px
+    md: 'h-10 px-5 text-sm',   // 40px
+    lg: 'h-11 px-6 text-base', // 44px
   }
 
-  // Базовые стили
   const baseStyles = `
-    inline-flex 
-    items-center 
-    justify-center 
-    rounded-[8px] 
-    font-rubik 
-    font-medium 
-    transition-all 
-    duration-300 
-    cursor-pointer
-    whitespace-nowrap
+    inline-flex items-center justify-center
+    rounded-md font-rubik font-medium
+    transition-all duration-200
+    cursor-pointer whitespace-nowrap
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
     ${sizes[size] || sizes.md}
   `.trim().replace(/\s+/g, ' ')
 
-  // Стили в зависимости от состояния
   const stateStyles = active
-    ? 'bg-primary text-white shadow-md'
-    : 'bg-white border-2 border-gray-light text-gray-medium hover:border-primary hover:text-primary'
+    ? 'bg-primary text-white shadow-sm'
+    : 'bg-white border border-gray-light text-gray-medium hover:border-primary hover:text-primary'
 
   return (
     <button
@@ -54,7 +47,7 @@ const Tab = ({
  */
 export const TabGroup = ({ children, className = '' }) => {
   return (
-    <div className={`flex flex-wrap gap-3 ${className}`}>
+    <div className={`flex flex-wrap gap-2 ${className}`}>
       {children}
     </div>
   )
