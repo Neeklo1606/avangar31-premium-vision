@@ -70,8 +70,8 @@ function Header() {
     <header className="w-full bg-white border-b border-gray-light/40 sticky top-0 z-50">
       <div className="max-w-container mx-auto px-4">
         <div className="flex items-center gap-4 h-[72px] lg:h-[80px]">
-          
-          {/* Левый блок: Логотип + кнопка «Все объекты» с gap */}
+          {/* Левый блок: Логотип + «Все объекты» с увеличенным gap */}
+          <div className="flex items-center gap-6 flex-shrink-0">
           <Link to="/" className="flex-shrink-0">
             <img 
               src={logo} 
@@ -163,6 +163,7 @@ function Header() {
                 </div>
               </div>
             )}
+          </div>
           </div>
 
           {/* Центральная навигация */}

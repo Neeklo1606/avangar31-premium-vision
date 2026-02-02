@@ -90,7 +90,7 @@ const SearchSection = () => {
 
   return (
     <section className="w-full bg-white flex flex-col min-h-[calc(100vh-4.5rem)] lg:min-h-[calc(100vh-5rem)]">
-      <div className="max-w-container mx-auto px-4 py-6 lg:py-8 flex-1 flex flex-col justify-evenly gap-6 lg:gap-10">
+      <div className="max-w-container mx-auto px-4 py-4 lg:py-6 flex-1 flex flex-col justify-evenly gap-4 lg:gap-6">
         {/* Геолокация — отдельный контейнер строго под хедером, слева */}
         <div className="flex-shrink-0 flex justify-start">
           <button
@@ -109,12 +109,12 @@ const SearchSection = () => {
           </button>
         </div>
 
-        {/* Hero-блок по центру, уже контейнера (max-w-2xl), пропорциональные отступы */}
-        <div className="mx-auto max-w-2xl flex-shrink-0 flex flex-col gap-4 lg:gap-5">
-          {/* Заголовок — по центру, Live Grid. синий italic, остальное bold normal */}
-          <h1 className="text-center text-dark text-xl lg:text-3xl font-rubik font-normal leading-tight">
+        {/* Hero-блок по центру (max-w-xl), компактные отступы */}
+        <div className="mx-auto max-w-xl flex-shrink-0 flex flex-col gap-4 lg:gap-5">
+          {/* Заголовок — Live Grid. синий italic, остальное medium */}
+          <h1 className="text-center text-dark text-xl lg:text-2xl font-rubik font-normal leading-tight">
             <span className="text-primary italic font-semibold">Live Grid.</span>{' '}
-            <span className="font-bold">Более 100 000 объектов по России</span>
+            <span className="font-medium">Более 100 000 объектов по России</span>
           </h1>
 
           {/* Модальное окно региона */}
@@ -125,46 +125,45 @@ const SearchSection = () => {
             onSelectRegion={handleSelectRegion}
           />
 
-          {/* Строка поиска + CTA — по центру, input с лупой слева, кнопка фильтра квадратная, CTA одна высота с input */}
+          {/* Строка поиска + CTA — input и CTA 44px, в одном ряду на desktop */}
           <div className="relative" ref={filterRef}>
             <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 items-stretch lg:items-center">
-              {/* Поле поиска — иконка лупы слева, placeholder по макету */}
+              {/* Поле поиска — иконка лупы слева */}
               <div className="flex-1 min-w-0">
                 <Input
                   size="md"
                   placeholder="Поиск по сайту"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleSearchKeyPress}
-                icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
-                iconPosition="left"
-                className="w-full"
-                rightElement={
-                  <IconButton
-                    variant="primary"
-                    size="sm"
-                    className={`w-9 h-9 min-w-[36px] ${isFilterOpen ? 'ring-2 ring-primary ring-offset-1' : ''}`}
-                    onClick={() => setIsFilterOpen((v) => !v)}
-                    ariaLabel="Фильтры"
-                    icon={
-                      <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                        <path d="M3 5h14M5 10h10M7 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    }
-                  />
-                }
-              />
-            </div>
-
-            {/* CTA — одинаковая высота с input (~44px), радиус 8px */}
-            <Button 
-              variant="primary" 
-              size="md"
-              className="w-full lg:w-auto flex-shrink-0 lg:min-w-[200px] h-11 rounded-md"
-              onClick={handleSearch}
-            >
-              Показать 121 563 объекта
-            </Button>
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleSearchKeyPress}
+                  icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
+                  iconPosition="left"
+                  className="w-full h-11"
+                  rightElement={
+                    <IconButton
+                      variant="primary"
+                      size="sm"
+                      className={`w-9 h-9 min-w-[36px] ${isFilterOpen ? 'ring-2 ring-primary ring-offset-1' : ''}`}
+                      onClick={() => setIsFilterOpen((v) => !v)}
+                      ariaLabel="Фильтры"
+                      icon={
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                          <path d="M3 5h14M5 10h10M7 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                      }
+                    />
+                  }
+                />
+              </div>
+              {/* CTA — 44px (h-11), в одном ряду с input на desktop */}
+              <Button
+                variant="primary"
+                size="md"
+                className="w-full lg:w-auto flex-shrink-0 lg:min-w-[200px] h-11 rounded-md"
+                onClick={handleSearch}
+              >
+                Показать 121 563 объекта
+              </Button>
             </div>
 
             {/* Панель фильтров */}
@@ -236,8 +235,8 @@ const SearchSection = () => {
           </TabGroup>
         </div>
 
-        {/* Сетка категорий — на всю ширину контейнера, пропорциональные отступы */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2 lg:gap-3 auto-rows-fr flex-shrink-0 min-h-0">
+        {/* Сетка категорий: Row1 — 2 wide + 3 narrow, Row2 — 3 narrow + 2 wide (7 cols) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-1.5 lg:gap-2 auto-rows-fr flex-shrink-0 min-h-0">
           {categories.map((category, index) => (
             <CategoryCard
               key={index}
