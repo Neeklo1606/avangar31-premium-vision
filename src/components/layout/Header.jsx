@@ -67,11 +67,11 @@ function Header() {
   }, [isDropdownOpen, isMobileMenuOpen])
 
   return (
-    <header className="w-full bg-white border-b border-gray-light/40 sticky top-0 z-50">
+    <header className="w-full bg-white border-b border-gray-light/40 sticky top-0 z-50 pt-[env(safe-area-inset-top)]">
       <div className="max-w-container mx-auto px-4">
-        <div className="flex items-center gap-4 h-[72px] lg:h-[80px]">
-          {/* Левый блок: Логотип + «Все объекты» с увеличенным gap */}
-          <div className="flex items-center gap-6 flex-shrink-0">
+        <div className="flex items-center justify-between gap-4 h-[56px] sm:h-[64px] lg:h-[80px]">
+          {/* Mobile (< lg): логотип слева */}
+          <div className="flex items-center gap-4 lg:gap-6 flex-shrink-0 min-w-0">
           <Link to="/" className="flex-shrink-0">
             <img 
               src={logo} 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, Tab, TabGroup, IconButton, RegionModal } from '../ui'
+import { Button, Input, Tab, TabGroup, RegionModal } from '../ui'
 import CategoryCard from '../ui/CategoryCard'
 import locationIcon from '../../assets/icons/location-icon.svg'
 import searchIcon from '../../assets/icons/search-icon.svg'
@@ -89,13 +89,13 @@ const SearchSection = () => {
   }
 
   return (
-    <section className="w-full bg-white flex flex-col min-h-[calc(100vh-4.5rem)] lg:min-h-[calc(100vh-5rem)]">
-      <div className="max-w-container mx-auto px-4 py-4 lg:py-6 flex-1 flex flex-col justify-evenly gap-4 lg:gap-6">
-        {/* Геолокация — отдельный контейнер строго под хедером, слева */}
+    <section className="w-full bg-white flex flex-col">
+      <div className="max-w-container mx-auto px-4 pt-2 pb-4 lg:pt-3 lg:pb-6 flex flex-col gap-3 lg:gap-4">
+        {/* Геолокация — отдельная кнопка под хедером, слева */}
         <div className="flex-shrink-0 flex justify-start">
           <button
             onClick={() => setIsRegionModalOpen(true)}
-            className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer group"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-transparent hover:bg-gray-50 transition-colors cursor-pointer group text-left"
           >
             <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-primary opacity-60 group-hover:opacity-100" aria-hidden>
               <path d="M7.5 0C3.36473 0 7.63536e-05 3.40955 7.63536e-05 7.59525C-0.0271109 13.718 7.215 18.7948 7.5 19C7.5 19 15.0271 13.718 14.9999 7.6C14.9999 3.40955 11.6353 0 7.5 0ZM7.5 11.4C5.42815 11.4 3.75004 9.6995 3.75004 7.6C3.75004 5.5005 5.42815 3.8 7.5 3.8C9.57186 3.8 11.25 5.5005 11.25 7.6C11.25 9.6995 9.57186 11.4 7.5 11.4Z" fill="currentColor"/>
@@ -110,11 +110,11 @@ const SearchSection = () => {
         </div>
 
         {/* Hero-блок по центру (max-w-xl), компактные отступы */}
-        <div className="mx-auto max-w-xl flex-shrink-0 flex flex-col gap-4 lg:gap-5">
-          {/* Заголовок — Live Grid. синий italic, остальное medium */}
-          <h1 className="text-center text-dark text-xl lg:text-2xl font-rubik font-normal leading-tight">
+        <div className="mx-auto w-full max-w-xl flex-shrink-0 flex flex-col gap-3 lg:gap-4">
+          {/* Заголовок — Live Grid. синий italic, остальное чёрный, центр */}
+          <h1 className="text-center text-xl lg:text-2xl font-rubik font-normal leading-tight">
             <span className="text-primary italic font-semibold">Live Grid.</span>{' '}
-            <span className="font-medium">Более 100 000 объектов по России</span>
+            <span className="text-dark font-medium">Более 100 000 объектов по России</span>
           </h1>
 
           {/* Модальное окно региона */}
@@ -125,41 +125,40 @@ const SearchSection = () => {
             onSelectRegion={handleSelectRegion}
           />
 
-          {/* Строка поиска + CTA — input и CTA 44px, в одном ряду на desktop */}
+          {/* Строка поиска: [Input] [Filter] [CTA] — одна линия desktop; mobile: [Input+Filter] [CTA full] */}
           <div className="relative" ref={filterRef}>
-            <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 items-stretch lg:items-center">
-              {/* Поле поиска — иконка лупы слева */}
-              <div className="flex-1 min-w-0">
-                <Input
-                  size="md"
-                  placeholder="Поиск по сайту"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleSearchKeyPress}
-                  icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
-                  iconPosition="left"
-                  className="w-full h-11"
-                  rightElement={
-                    <IconButton
-                      variant="primary"
-                      size="sm"
-                      className={`w-9 h-9 min-w-[36px] ${isFilterOpen ? 'ring-2 ring-primary ring-offset-1' : ''}`}
-                      onClick={() => setIsFilterOpen((v) => !v)}
-                      ariaLabel="Фильтры"
-                      icon={
-                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                          <path d="M3 5h14M5 10h10M7 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        </svg>
-                      }
-                    />
-                  }
-                />
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center">
+              {/* Mobile: Input+Filter в одном ряду; Desktop: все в одном ряду */}
+              <div className="flex flex-row gap-2 sm:gap-3 flex-1 min-w-0">
+                <div className="flex-1 min-w-0">
+                  <Input
+                    size="md"
+                    placeholder="Поиск по сайту"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleSearchKeyPress}
+                    icon={<img src={searchIcon} alt="" className="w-4 h-4" />}
+                    iconPosition="left"
+                    className="w-full h-11 bg-gray-50 border-gray-light focus:border-primary rounded-lg"
+                  />
+                </div>
+                {/* Кнопка фильтра — квадратная, 44px, иконка воронка */}
+                <button
+                  type="button"
+                  onClick={() => setIsFilterOpen((v) => !v)}
+                  aria-label="Фильтры"
+                  className={`shrink-0 w-11 h-11 flex items-center justify-center rounded-lg bg-gray-50 border border-gray-light hover:bg-gray-100 transition-colors ${isFilterOpen ? 'ring-2 ring-primary ring-offset-1 bg-primary-light border-primary' : ''}`}
+                >
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
+                    <path d="M3 5h14M5 10h10M7 15h6" />
+                  </svg>
+                </button>
               </div>
-              {/* CTA — 44px (h-11), в одном ряду с input на desktop */}
+              {/* CTA — синяя, 44px, full width на mobile */}
               <Button
                 variant="primary"
                 size="md"
-                className="w-full lg:w-auto flex-shrink-0 lg:min-w-[200px] h-11 rounded-md"
+                className="w-full sm:w-auto flex-shrink-0 h-11 px-5 rounded-lg min-w-0 sm:min-w-[180px]"
                 onClick={handleSearch}
               >
                 Показать 121 563 объекта
@@ -219,15 +218,15 @@ const SearchSection = () => {
             )}
           </div>
 
-          {/* Табы — по ширине контейнера поиска, минимальные отступы, равномерно */}
-          <TabGroup layout="distribute">
+          {/* Табы фильтров — строго под поиском, центр hero, 36px высота, равномерные промежутки */}
+          <TabGroup layout="hero">
             {filterTabs.map((tab, index) => (
               <Tab
                 key={index}
                 active={activeTab === index}
                 onClick={() => setActiveTab(index)}
-                size="xs"
-                className="w-full"
+                size="hero"
+                variant="hero"
               >
                 {tab}
               </Tab>
@@ -235,15 +234,14 @@ const SearchSection = () => {
           </TabGroup>
         </div>
 
-        {/* Сетка категорий: Row1 — 2 wide + 3 narrow, Row2 — 3 narrow + 2 wide (7 cols) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-1.5 lg:gap-2 auto-rows-fr flex-shrink-0 min-h-0">
+        {/* Сетка категорий — 2 визуальных ряда, крупные карточки, gap 12–16px */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4 auto-rows-fr flex-shrink-0 min-h-0">
           {categories.map((category, index) => (
             <CategoryCard
               key={index}
               image={category.image}
               title={category.title}
               onClick={() => handleCategoryClick(category)}
-              className={category.wide ? 'lg:col-span-2' : 'lg:col-span-1'}
             />
           ))}
         </div>

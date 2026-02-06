@@ -9,28 +9,35 @@ const Tab = ({
   onClick, 
   children, 
   size = 'md',
+  variant = 'default',
   className = '' 
 }) => {
-  // Размеры (компактнее: меньший font-size, тоньше weight, меньше padding)
+  // Размеры
   const sizes = {
-    xs: 'h-8 px-3 text-xs font-normal',  // компактный
-    sm: 'h-8 px-3 text-xs font-normal',  // 32px, компактный
+    xs: 'h-8 px-3 text-xs font-normal',
+    sm: 'h-8 px-3 text-xs font-normal',
     md: 'h-9 px-4 text-sm font-normal',
     lg: 'h-10 px-5 text-sm font-medium',
+    hero: 'h-9 px-4 text-sm font-normal',  // 36px для hero-фильтров
   }
 
   const baseStyles = `
     inline-flex items-center justify-center
-    rounded-md font-rubik
+    font-rubik
     transition-all duration-200
     cursor-pointer whitespace-nowrap
     focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
     ${sizes[size] || sizes.md}
   `.trim().replace(/\s+/g, ' ')
 
-  const stateStyles = active
-    ? 'bg-primary text-white shadow-sm'
-    : 'bg-white border border-gray-light text-gray-medium hover:border-primary hover:text-primary'
+  // Hero: активный — синяя заливка, неактивный — светлый фон/граница, без шума
+  const stateStyles = variant === 'hero'
+    ? active
+      ? 'bg-primary text-white rounded-lg'
+      : 'bg-gray-50 border border-gray-light text-gray-medium hover:bg-gray-100 hover:border-gray-light rounded-lg'
+    : active
+      ? 'bg-primary text-white shadow-sm rounded-md'
+      : 'bg-white border border-gray-light text-gray-medium hover:border-primary hover:text-primary rounded-md'
 
   return (
     <button
@@ -45,18 +52,17 @@ const Tab = ({
 
 /**
  * Компонент группы табов.
- * layout="distribute" — табы равномерно по ширине контейнера с минимальным gap
+ * layout="distribute" — grid, равномерно по ширине
+ * layout="hero" — flex по центру, равномерные промежутки (для hero-фильтров)
  */
 export const TabGroup = ({ children, className = '', layout = 'default' }) => {
-  const isDistribute = layout === 'distribute'
+  const layoutClasses = {
+    default: 'flex flex-wrap gap-2',
+    distribute: 'grid grid-cols-5 gap-1',
+    hero: 'flex flex-wrap justify-center items-center gap-2',
+  }
   return (
-    <div
-      className={
-        isDistribute
-          ? `grid grid-cols-5 gap-1 ${className}`.trim()
-          : `flex flex-wrap gap-2 ${className}`.trim()
-      }
-    >
+    <div className={`${layoutClasses[layout] || layoutClasses.default} ${className}`.trim()}>
       {children}
     </div>
   )
