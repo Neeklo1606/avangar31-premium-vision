@@ -48,23 +48,23 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
   return (
     <CardWrapper
       {...cardProps}
-      className="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group border border-gray-light/30 block"
+      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ease-out group block"
     >
-      {/* Изображение */}
-      <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-50">
+      {/* Изображение — отступ от краёв карточки, скругление по макету */}
+      <div className="relative mx-2 mt-2 rounded-lg overflow-hidden bg-gray-50 aspect-[4/3]">
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg"
         />
         
-        {/* Бейджи */}
+        {/* Бейджи — аккуратные, без ощущения наклеек */}
         {tags.length > 0 && (
-          <div className="absolute top-2 left-2 flex flex-wrap gap-1 z-10">
+          <div className="absolute top-1.5 left-1.5 flex flex-wrap gap-1 z-10">
             {tags.slice(0, 2).map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-white/95 backdrop-blur-sm rounded-md text-xs font-rubik font-medium text-dark shadow-sm"
+                className="px-2 py-0.5 bg-white/90 backdrop-blur-sm rounded-md text-[11px] font-rubik font-medium text-dark"
               >
                 {tag}
               </span>
@@ -72,17 +72,17 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
           </div>
         )}
 
-        {/* Кнопка избранного */}
+        {/* Кнопка избранного — второстепенная, не конфликтует с бейджами */}
         <IconButton
           variant="ghost"
           size="sm"
           onClick={handleToggleFavorite}
-          className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white shadow-sm"
+          className="absolute top-1.5 right-1.5 z-10 w-8 h-8 min-w-[32px] bg-white/70 hover:bg-white rounded-md shadow-sm"
           ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
           icon={
             <svg 
-              width="18" 
-              height="18" 
+              width="16" 
+              height="16" 
               viewBox="0 0 24 24" 
               fill={isFavorite ? 'currentColor' : 'none'} 
               stroke="currentColor" 
@@ -95,23 +95,23 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
         />
 
         {/* Градиент снизу */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/15 to-transparent pointer-events-none" />
       </div>
 
-      {/* Информация */}
-      <div className="p-3 space-y-1.5">
-        {/* Заголовок */}
+      {/* Информация — отступ от изображения, без залипания */}
+      <div className="p-3 pt-2.5 space-y-1.5">
+        {/* Название объекта */}
         <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2">
           {title}
         </h3>
 
-        {/* Цена */}
-        <p className="text-dark text-lg font-rubik font-bold">
+        {/* Цена — визуально доминирует над адресом */}
+        <p className="text-dark text-base lg:text-lg font-rubik font-bold">
           {price}
         </p>
 
-        {/* Локация */}
-        <p className="text-gray-medium text-xs font-rubik flex items-center gap-1.5 truncate">
+        {/* Адрес — вторичный, не конкурирует с ценой */}
+        <p className="text-gray-medium text-xs font-rubik leading-relaxed flex items-center gap-1.5 truncate opacity-90">
           <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
           {location}
         </p>
