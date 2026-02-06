@@ -39,20 +39,21 @@ const getHref = (property) => {
 const HotOffersSection = () => {
   return (
     <section className="w-full bg-white py-8 lg:py-10 hot-offers-section overflow-x-hidden">
-      <div className="max-w-container mx-auto px-4 overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-5 lg:mb-6">
+      <div className="max-w-container mx-auto px-4 sm:px-6 overflow-hidden">
+        {/* Заголовок: desktop — title слева, кнопка справа; mobile — по центру */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 text-center sm:text-left">
           <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold">
             Горящие предложения
           </h2>
           <Link
             to="/catalog"
-            className="h-10 px-4 flex items-center bg-gray-50 rounded-md text-dark text-sm font-rubik hover:bg-gray-100 transition-colors"
+            className="text-primary text-sm font-rubik font-medium hover:underline sm:ml-auto"
           >
             Все предложения
           </Link>
         </div>
 
-        <div className="relative pb-12 overflow-hidden">
+        <div className="relative pb-14 overflow-hidden">
           <Swiper
             modules={[Pagination]}
             spaceBetween={16}
@@ -76,7 +77,12 @@ const HotOffersSection = () => {
               1024: {
                 slidesPerView: 4,
                 slidesPerGroup: 4,
-                spaceBetween: 16,
+                spaceBetween: 24,
+              },
+              1200: {
+                slidesPerView: 4,
+                slidesPerGroup: 4,
+                spaceBetween: 24,
               },
             }}
             pagination={{ clickable: true }}
@@ -93,6 +99,7 @@ const HotOffersSection = () => {
                   tags={property.tags}
                   discount={property.discount}
                   href={getHref(property)}
+                  variant="hot"
                 />
               </SwiperSlide>
             ))}
@@ -100,9 +107,16 @@ const HotOffersSection = () => {
         </div>
       </div>
       <style>{`
+        @keyframes hotOffersFadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         .hot-offers-section .swiper,
         .hot-offers-section .hot-offers-swiper {
           overflow: hidden;
+        }
+        .hot-offers-section .swiper-slide-active > * {
+          animation: hotOffersFadeIn 0.35s ease-out backwards;
         }
         .hot-offers-section .swiper-slide {
           height: auto;
@@ -114,13 +128,15 @@ const HotOffersSection = () => {
           min-height: 0;
         }
         .hot-offers-section .swiper {
-          padding-bottom: 3rem;
+          padding-bottom: 3.5rem;
         }
         .hot-offers-section .swiper-pagination {
           bottom: 0 !important;
+          margin-top: 20px;
           display: flex;
           justify-content: center;
-          gap: 0.375rem;
+          align-items: center;
+          gap: 0.5rem;
         }
         .hot-offers-section .swiper-pagination-bullet {
           width: 28px;
@@ -132,6 +148,20 @@ const HotOffersSection = () => {
         }
         .hot-offers-section .swiper-pagination-bullet-active {
           background: hsl(var(--color-primary));
+        }
+        @media (max-width: 768px) {
+          .hot-offers-section .swiper-slide {
+            padding: 0 8px;
+          }
+        }
+        @media (hover: none) {
+          .hot-offers-section .hot-offers-card:hover {
+            transform: none !important;
+            box-shadow: 0 2px 8px rgba(30, 30, 30, 0.06) !important;
+          }
+          .hot-offers-section .hot-offers-card:hover img {
+            transform: none !important;
+          }
         }
       `}</style>
     </section>

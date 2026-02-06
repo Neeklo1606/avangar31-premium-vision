@@ -115,6 +115,7 @@ body {
   line-height: var(--leading-normal);
   color: hsl(var(--color-dark));
   background-color: white;
+  overflow-x: hidden;
 }
 
 #root {

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Checkbox = ({ label, checked = false, onChange }) => {
+const Checkbox = ({ label, checked = false, onChange, className = '' }) => {
   return (
-    <label className="flex items-center gap-3 cursor-pointer group">
+    <label className={`flex items-center gap-3 cursor-pointer group ${className}`}>
       <div className="relative">
         <input
           type="checkbox"

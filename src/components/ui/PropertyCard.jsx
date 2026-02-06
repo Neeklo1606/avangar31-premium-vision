@@ -22,8 +22,9 @@ function setStoredFavorites(ids) {
 /**
  * Унифицированная карточка объекта недвижимости
  * discount — опциональный блок скидки (напр. «Скидка 20% до 1 февраля 2026»)
+ * variant="hot" — layout для блока «Горящие предложения»: title+price в строку, скидка на всю ширину
  */
-const PropertyCard = ({ id, image, title, price, location, tags = [], href, discount }) => {
+const PropertyCard = ({ id, image, title, price, location, tags = [], href, discount, variant }) => {
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
@@ -46,10 +47,12 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
   const CardWrapper = href ? Link : 'div'
   const cardProps = href ? { to: href } : {}
 
+  const isHot = variant === 'hot'
+
   return (
     <CardWrapper
       {...cardProps}
-      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out group block isolate"
+      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out group block isolate hot-offers-card"
     >
       {/* Изображение — отступ от краёв карточки, скругление по макету */}
       <div className="relative mx-2 mt-2 rounded-lg overflow-hidden bg-gray-50 aspect-[4/3]">
@@ -100,28 +103,44 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
       </div>
 
       {/* Информация — отступ от изображения, без залипания */}
-      <div className="p-3 pt-2.5 space-y-1.5">
-        {/* Название объекта */}
-        <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2">
-          {title}
-        </h3>
-
-        {/* Цена — визуально доминирует над адресом */}
-        <p className="text-dark text-base lg:text-lg font-rubik font-bold">
-          {price}
-        </p>
-
-        {/* Адрес — вторичный, не конкурирует с ценой */}
-        {location && (
-          <p className="text-gray-medium text-xs font-rubik leading-relaxed flex items-center gap-1.5 truncate opacity-90">
-            <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
-            {location}
-          </p>
+      <div className={`p-3 pt-2.5 flex flex-col ${isHot ? 'gap-1.5' : 'space-y-1.5'}`}>
+        {isHot ? (
+          <>
+            {/* Hot: название слева, цена справа — в одну строку */}
+            <div className="flex justify-between items-baseline gap-2">
+              <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2 flex-1 min-w-0">
+                {title}
+              </h3>
+              <p className="text-dark text-base font-rubik font-bold flex-shrink-0">
+                {price}
+              </p>
+            </div>
+            {location && (
+              <p className="text-gray-medium text-xs font-rubik leading-relaxed truncate opacity-90">
+                {location}
+              </p>
+            )}
+          </>
+        ) : (
+          <>
+            <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2">
+              {title}
+            </h3>
+            <p className="text-dark text-base lg:text-lg font-rubik font-bold">
+              {price}
+            </p>
+            {location && (
+              <p className="text-gray-medium text-xs font-rubik leading-relaxed flex items-center gap-1.5 truncate opacity-90">
+                <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
+                {location}
+              </p>
+            )}
+          </>
         )}
 
-        {/* Блок скидки (5.8) — опционально для горящих предложений */}
+        {/* Блок скидки — full width, min 44px на mobile для Hot */}
         {discount && (
-          <div className="mt-2 py-2 px-3 rounded-lg bg-primary text-white text-xs font-rubik font-medium">
+          <div className={`mt-2 py-2 px-3 rounded-lg bg-primary text-white text-xs font-rubik font-medium flex items-center justify-center ${isHot ? 'min-h-[44px] w-full' : ''}`}>
             {discount}
           </div>
         )}

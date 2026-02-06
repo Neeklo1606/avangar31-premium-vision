@@ -168,12 +168,12 @@ const ResidentialComplexCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchStart={resetDidSwipe}
-      className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out border border-gray-light/20 cursor-pointer flex flex-col min-h-0 h-full"
+      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out border border-gray-light/20 cursor-pointer flex flex-col min-h-0 h-full"
     >
-      {/* Изображение — фиксированная высота, без layout shift (3.1, 3.11) */}
+      {/* Изображение — плавное уменьшение по Y при hover */}
       <div
         ref={imageRef}
-        className="relative w-full aspect-[4/3] min-h-[160px] sm:min-h-[180px] lg:min-h-[200px] bg-gray-50 overflow-hidden select-none rounded-t-xl"
+        className="relative w-full aspect-[4/3] min-h-[160px] sm:min-h-[180px] lg:min-h-[200px] bg-gray-50 overflow-hidden select-none rounded-t-xl flex-shrink-0"
         onClick={handleImageClick}
         onMouseMove={handleImageMouseMove}
         onTouchStart={handleImageTouchStart}
@@ -183,7 +183,7 @@ const ResidentialComplexCard = ({
           <img
             src={displayImage}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-300"
+            className="w-full h-full object-cover object-top origin-top transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] delay-200 group-hover:delay-0 group-hover:scale-y-[0.82]"
           />
         ) : (
           <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-medium text-sm">
@@ -255,18 +255,18 @@ const ResidentialComplexCard = ({
           {apartmentsCount}
         </p>
 
-        {/* Блок квартир — раскрытие по hover (desktop) или тапу (mobile) (3.7, M3.7) */}
+        {/* Блок квартир — плавное раскрытие: шаг 1 фото, шаг 2 контент */}
         {apartmentsToShow.length > 0 && (
           <div
-            className="overflow-hidden transition-[opacity,transform] duration-200 ease-out"
-            style={{
-              opacity: expanded ? 1 : 0,
-              transform: expanded ? 'translateY(0)' : 'translateY(-8px)',
-              maxHeight: expanded ? 140 : 0,
-              visibility: expanded ? 'visible' : 'hidden',
-            }}
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${
+              expanded ? 'max-h-[160px] opacity-100 delay-75' : 'max-h-0 opacity-0 delay-150 pointer-events-none'
+            }`}
           >
-            <div className="border-t border-gray-light/40 pt-2 space-y-1.5">
+            <div
+              className={`border-t border-gray-light/40 pt-2 space-y-1.5 transition-[opacity,transform] duration-250 ease-out ${
+                expanded ? 'opacity-100 translate-y-0 delay-150' : 'opacity-0 -translate-y-2 delay-0'
+              }`}
+            >
               {apartmentsToShow.map((apt, index) => (
                 <div
                   key={index}

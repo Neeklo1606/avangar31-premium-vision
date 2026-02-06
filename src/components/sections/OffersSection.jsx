@@ -89,34 +89,34 @@ const OffersSection = () => {
             ))}
           </div>
 
-          {/* Правая часть: CTA-блок — по высоте сетки */}
-          <div className="lg:w-[320px] flex-shrink-0 flex">
-            <div className="relative bg-primary rounded-xl overflow-hidden shadow-sm w-full min-h-[280px] flex flex-col">
-              <div className="flex-1 flex flex-col justify-between p-5">
-                <div className="space-y-3">
-                  <h3 className="text-white text-2xl lg:text-3xl font-rubik font-bold leading-tight">
+          {/* Правая часть: CTA-блок — по макету */}
+          <div className="lg:w-[340px] flex-shrink-0 flex">
+            <div className="relative bg-primary rounded-2xl overflow-hidden shadow-md w-full min-h-[320px] lg:min-h-0 flex flex-col">
+              <div className="flex-1 flex flex-col justify-between p-6 lg:p-7">
+                <div className="space-y-4">
+                  <h3 className="text-white text-3xl lg:text-4xl font-rubik font-extrabold leading-tight">
                     100 000+<br />объектов
                   </h3>
-                  <p className="text-white/90 text-sm font-rubik leading-relaxed">
-                    Еще больше объектов<br />
-                    недвижимости в нашем каталоге
+                  <p className="text-white/80 text-sm font-rubik leading-relaxed max-w-[260px]">
+                    Еще больше объектов недвижимости в нашем каталоге
                   </p>
-                  <Button 
-                    variant="secondary" 
-                    size="md"
-                    className="bg-white text-dark hover:bg-white/95 hover:scale-[1.02] active:scale-[0.98] border-white shadow-sm transition-all duration-200"
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    fullWidth
+                    className="!h-12 !w-full !min-w-0 !px-6 bg-white text-dark border-gray-200 hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 rounded-xl transition-all duration-250 ease-out border"
                     to="/catalog"
                   >
                     Перейти в каталог
                   </Button>
                 </div>
 
-                {/* Изображение — по макету: значительная часть блока, без обрезки */}
-                <div className="hidden lg:block mt-5 flex-1 min-h-[140px] flex items-end">
+                {/* Иллюстрация — крупная, с объёмом, в нижней части */}
+                <div className="mt-6 lg:mt-8 flex-1 min-h-[160px] lg:min-h-[200px] flex items-end justify-center">
                   <img
                     src={bannerImage}
                     alt="Каталог недвижимости"
-                    className="w-full h-[180px] object-contain object-bottom"
+                    className="w-full max-w-[320px] h-[200px] lg:h-[260px] object-contain object-bottom drop-shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
                   />
                 </div>
               </div>

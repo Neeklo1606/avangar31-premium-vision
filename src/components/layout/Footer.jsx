@@ -39,7 +39,14 @@ const SOCIAL = [
   { href: 'https://youtube.com', Icon: YouTubeIcon, label: 'YouTube' },
 ]
 
-const NAV_LINKS = ['Новостройки', 'Вторичная', 'Аренда', 'Дома', 'Коммерческая', 'Участки']
+const NAV_LINKS = [
+  { label: 'Новостройки', to: '/catalog/new-buildings' },
+  { label: 'Вторичная', to: '/catalog?type=secondary' },
+  { label: 'Аренда', to: '/catalog?type=rent' },
+  { label: 'Дома', to: '/catalog?category=Дома' },
+  { label: 'Коммерческая', to: '/catalog?category=Коммерческая недвижимость' },
+  { label: 'Участки', to: '/catalog?category=Участки' },
+]
 
 const POPULAR_LINKS = [
   { label: 'Подобрать объект', to: '/#help' },
@@ -72,12 +79,12 @@ const Footer = () => {
               Площадка недвижимости
             </p>
             <div className="pt-2 space-y-1.5">
-              <a href="#" className="block text-dark text-sm font-rubik hover:text-primary transition-colors underline">
+              <Link to="/privacy" className="block text-dark text-sm font-rubik hover:text-primary transition-colors underline">
                 Политика конфиденциальности
-              </a>
-              <a href="#" className="block text-dark text-sm font-rubik hover:text-primary transition-colors underline">
+              </Link>
+              <Link to="/privacy" className="block text-dark text-sm font-rubik hover:text-primary transition-colors underline">
                 Обработка персональных данных
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -89,8 +96,8 @@ const Footer = () => {
             <ul className="space-y-2">
               {NAV_LINKS.map((item, i) => (
                 <li key={i}>
-                  <Link to="#" className="text-gray-medium text-sm font-rubik hover:text-primary transition-colors">
-                    {item}
+                  <Link to={item.to} className="text-gray-medium text-sm font-rubik hover:text-primary transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -145,9 +152,9 @@ const Footer = () => {
         <div className="border-t border-gray-light/40 pt-5">
           <p className="text-gray-medium text-xs font-rubik max-w-[900px]">
             LiveGrid — база объявлений по недвижимости в России. Используя сервис, вы соглашаетесь с{' '}
-            <a href="#" className="text-dark underline hover:text-primary transition-colors">Пользовательским соглашением</a>
+            <Link to="/privacy" className="text-dark underline hover:text-primary transition-colors">Пользовательским соглашением</Link>
             {' '}и{' '}
-            <a href="#" className="text-dark underline hover:text-primary transition-colors">Политикой конфиденциальности</a>
+            <Link to="/privacy" className="text-dark underline hover:text-primary transition-colors">Политикой конфиденциальности</Link>
             . ООО «ЛайвГрид». Поддержка:{' '}
             <a href="mailto:support@livegrid.ru" className="text-dark underline hover:text-primary transition-colors">support@livegrid.ru</a>
           </p>

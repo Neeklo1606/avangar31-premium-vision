@@ -1,14 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Input } from '../components/ui'
+import { Link } from 'react-router-dom'
+import { Button, Input, Checkbox } from '../components/ui'
 import Breadcrumbs from '../components/ui/Breadcrumbs'
 import PropertyCard from '../components/ui/PropertyCard'
 import propertyCard1 from '../assets/images/property-card-1.svg'
 import propertyCard2 from '../assets/images/property-card-2.svg'
 import propertyCard3 from '../assets/images/property-card-3.svg'
 
+const PRIVACY_LINK = '/privacy'
+
 const PropertyDetailPage = () => {
   const { id } = useParams()
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [consent, setConsent] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!consent || submitting) return
+    setSubmitting(true)
+    setTimeout(() => {
+      setSubmitting(false)
+      setSubmitted(true)
+      setName('')
+      setPhone('')
+      setConsent(false)
+    }, 800)
+  }
 
   const breadcrumbItems = [
     { label: 'Главная', link: '/' },
@@ -127,28 +148,61 @@ const PropertyDetailPage = () => {
               <h3 className="text-white text-[20px] font-rubik font-bold mb-4">
                 Заинтересовал объект?
               </h3>
-              <div className="space-y-3">
-                <Input
-                  type="text"
-                  placeholder="Ваше имя"
-                  size="md"
-                  className="focus:ring-2 focus:ring-white/50"
-                />
-                <Input
-                  type="tel"
-                  placeholder="Телефон"
-                  size="md"
-                  className="focus:ring-2 focus:ring-white/50"
-                />
-                <Button 
-                  variant="secondary" 
-                  size="lg" 
-                  fullWidth
-                  className="bg-white text-primary hover:bg-gray-50 hover:text-primary border-white"
-                >
-                  Отправить заявку
-                </Button>
-              </div>
+              {submitted ? (
+                <p className="text-white text-sm font-rubik">
+                  Заявка отправлена. Мы свяжемся с вами в ближайшее время.
+                </p>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <Input
+                    type="text"
+                    placeholder="Ваше имя"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    size="md"
+                    className="focus:ring-2 focus:ring-white/50 border-white/30 bg-white/10 text-white placeholder:text-white/70"
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Телефон"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                    size="md"
+                    className="focus:ring-2 focus:ring-white/50 border-white/30 bg-white/10 text-white placeholder:text-white/70"
+                  />
+                  <div className="py-2 text-white text-sm [&_a]:text-white/95 [&_a:hover]:text-white [&_a]:underline">
+                    <Checkbox
+                      checked={consent}
+                      onChange={(e) => setConsent(e.target.checked)}
+                      className="[&>span]:!text-white"
+                      label={
+                        <>
+                          Я согласен на{' '}
+                          <Link to={PRIVACY_LINK} target="_blank" rel="noopener noreferrer">
+                            обработку персональных данных
+                          </Link>
+                          {' '}в соответствии с{' '}
+                          <Link to={PRIVACY_LINK} target="_blank" rel="noopener noreferrer">
+                            политикой конфиденциальности
+                          </Link>
+                        </>
+                      }
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    size="lg"
+                    fullWidth
+                    disabled={!consent || submitting}
+                    className="bg-white text-primary hover:bg-gray-50 hover:text-primary border-white disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                  >
+                    {submitting ? 'Отправка…' : 'Отправить заявку'}
+                  </Button>
+                </form>
+              )}
             </div>
           </div>
         </div>
