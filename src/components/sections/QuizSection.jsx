@@ -19,13 +19,13 @@ const QUIZ_STEPS = [
 ]
 
 const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" className="shrink-0">
+  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="shrink-0">
     <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
 const ClockIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 48 48" fill="none" className="shrink-0">
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="shrink-0">
     <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" fill="none" />
     <path d="M24 14v10l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -41,7 +41,20 @@ const QuizSection = () => {
   const isLastStep = step === totalSteps - 1
   const isTypeStep = currentStep?.id === 'type'
 
+  const selectedTypes = Array.isArray(answers.type) ? answers.type : answers.type ? [answers.type] : []
+
+  const handleTypeToggle = (value) => {
+    setAnswers((prev) => {
+      const current = Array.isArray(prev.type) ? prev.type : prev.type ? [prev.type] : []
+      const next = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value]
+      return { ...prev, type: next }
+    })
+  }
+
   const handleSelect = (stepId, value) => {
+    if (stepId === 'type') return
     setAnswers((prev) => ({ ...prev, [stepId]: value }))
     if (!isLastStep) setStep((prev) => prev + 1)
   }
@@ -54,46 +67,48 @@ const QuizSection = () => {
     if (!isLastStep) setStep((prev) => prev + 1)
   }
 
-  const selectedType = answers.type
-
   return (
     <section className="w-full bg-gray-50 py-8 lg:py-12">
       <div className="max-w-container mx-auto px-4">
-        <div className="rounded-lg border border-gray-light/40 bg-white shadow-sm flex flex-col lg:flex-row overflow-hidden">
-          {/* Левая часть — квиз */}
-          <div className="flex-1 p-5 lg:p-6">
-            <h2 className="text-dark text-xl lg:text-2xl font-rubik font-bold mb-1">
+        <div className="rounded-xl border border-gray-light/30 bg-white shadow-sm flex flex-col lg:flex-row overflow-hidden items-stretch">
+          {/* Левая часть — квиз (4.1, 4.2) */}
+          <div className="flex-1 p-6 lg:p-8 flex flex-col min-w-0">
+            <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold leading-tight mb-2">
               Подберем объект под Ваш запрос
             </h2>
-            <p className="text-gray-medium text-sm font-rubik mb-5">
+            <p className="text-gray-medium text-sm font-rubik leading-relaxed mb-6">
               {currentStep?.question}
             </p>
 
             {isTypeStep ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:gap-3 mb-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-4 mb-6 auto-rows-fr">
                 {PROPERTY_TYPES.map((opt) => {
-                  const isSelected = selectedType === opt.value
+                  const isSelected = selectedTypes.includes(opt.value)
                   return (
                     <button
                       key={opt.value}
                       type="button"
-                      onClick={() => handleSelect('type', opt.value)}
-                      className={`relative rounded-lg border p-3 flex flex-col items-center justify-end min-h-[100px] lg:min-h-[120px] transition-all duration-200 ${
+                      onClick={() => handleTypeToggle(opt.value)}
+                      aria-pressed={isSelected}
+                      aria-selected={isSelected}
+                      className={`relative rounded-xl border p-4 flex flex-col items-center justify-center min-h-[100px] lg:min-h-[120px] cursor-pointer transition-[background-color,color,border-color,box-shadow] duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                         isSelected
-                          ? 'bg-primary border-primary text-white'
-                          : 'bg-white border-gray-light text-dark hover:border-primary/50'
+                          ? 'bg-primary border-primary text-white shadow-md'
+                          : 'bg-white border-gray-light/60 text-dark hover:border-primary/50'
                       }`}
                     >
-                      <div className="w-full flex-1 flex items-center justify-center mb-2">
+                      <div className="w-full flex-1 flex items-center justify-center mb-3">
                         <img
                           src={opt.image}
                           alt=""
-                          className="max-h-[50px] lg:max-h-[60px] w-auto object-contain"
+                          className={`max-h-[50px] lg:max-h-[60px] w-auto object-contain transition-opacity duration-200 ${
+                            isSelected ? 'brightness-0 invert opacity-95' : ''
+                          }`}
                           onError={(e) => { e.target.style.display = 'none' }}
                         />
                       </div>
                       <div className="w-full flex items-center justify-between gap-2">
-                        <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 ${
+                        <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 transition-colors duration-200 ${
                           isSelected ? 'bg-white/90 text-primary' : 'border border-gray-medium'
                         }`}>
                           {isSelected ? <CheckIcon /> : null}
@@ -107,7 +122,7 @@ const QuizSection = () => {
                 })}
               </div>
             ) : !isLastStep ? (
-              <div className="flex flex-wrap gap-2 mb-5">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {currentStep?.options?.map((opt) => {
                   const isSelected = answers[currentStep.id] === opt.value
                   return (
@@ -115,7 +130,7 @@ const QuizSection = () => {
                       key={opt.value}
                       type="button"
                       onClick={() => handleSelect(currentStep.id, opt.value)}
-                      className={`px-4 py-2.5 rounded-md text-sm font-rubik font-medium transition-colors ${
+                      className={`px-4 py-2.5 rounded-lg text-sm font-rubik font-medium transition-all duration-200 ease-out ${
                         isSelected ? 'bg-primary text-white' : 'bg-gray-50 text-dark hover:bg-primary/10'
                       }`}
                     >
@@ -125,8 +140,8 @@ const QuizSection = () => {
                 })}
               </div>
             ) : (
-              <div className="mb-5">
-                <p className="text-gray-medium text-sm font-rubik mb-4">
+              <div className="mb-6">
+                <p className="text-gray-medium text-sm font-rubik mb-4 leading-relaxed">
                   Ваши ответы сохранены. Нажмите «Следующий», чтобы перейти к подборке.
                 </p>
                 <Button variant="primary" size="md" to="/catalog">
@@ -135,48 +150,50 @@ const QuizSection = () => {
               </div>
             )}
 
-            {/* Прогресс */}
-            <div className="flex items-center gap-1 mb-5">
-              {Array.from({ length: totalSteps }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`inline-block h-1 rounded-full transition-all ${
-                    i === step ? 'w-5 bg-primary' : 'w-5 bg-gray-light'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Кнопки */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleBack}
-                disabled={isFirstStep}
-              >
-                Назад
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleNext}
-                disabled={isLastStep}
-              >
-                Следующий
-              </Button>
+            {/* Прогресс + кнопки (4.7) */}
+            <div className="mt-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5">
+                {Array.from({ length: totalSteps }).map((_, i) => (
+                  <span
+                    key={i}
+                    className={`inline-block h-1.5 rounded-full transition-all duration-200 ${
+                      i === step ? 'w-6 bg-primary' : 'w-5 bg-gray-light'
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="flex items-center gap-2 justify-center sm:justify-end">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={handleBack}
+                  disabled={isFirstStep}
+                  className="h-11 px-5"
+                >
+                  Назад
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={handleNext}
+                  disabled={isLastStep}
+                  className="h-11 px-5 shadow-sm"
+                >
+                  Следующий
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Правая часть — синяя панель */}
-          <div className="w-full lg:w-[260px] bg-primary flex-shrink-0 p-5 lg:p-6 flex flex-col items-center justify-center text-center">
-            <h3 className="text-white text-lg font-rubik font-bold mb-3">
+          {/* Правая часть — CTA (4.8, 4.9) */}
+          <div className="w-full lg:w-[260px] bg-primary flex-shrink-0 p-6 lg:p-8 flex flex-col items-center justify-center text-center">
+            <h3 className="text-white text-lg lg:text-xl font-rubik font-bold mb-4 leading-tight">
               Подберем за 5 минут
             </h3>
-            <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-white mb-4">
+            <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white/30 flex items-center justify-center text-white mb-6 flex-shrink-0">
               <ClockIcon />
             </div>
-            <div className="w-full max-w-[160px] h-[100px] rounded-lg bg-white/10 flex items-center justify-center">
+            <div className="w-full max-w-[180px] h-[120px] rounded-lg bg-white/10 flex items-center justify-center mt-auto flex-shrink-0">
               <span className="text-white/60 text-xs font-rubik">Иллюстрация</span>
             </div>
           </div>
