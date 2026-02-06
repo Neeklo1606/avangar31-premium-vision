@@ -68,15 +68,15 @@ function Header() {
 
   return (
     <header className="w-full bg-white border-b border-gray-light/40 sticky top-0 z-50 pt-[env(safe-area-inset-top)]">
-      <div className="max-w-container mx-auto px-4">
-        <div className="flex items-center justify-between gap-4 h-[56px] sm:h-[64px] lg:h-[80px]">
+      <div className="max-w-container mx-auto px-4 sm:px-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 h-[52px] sm:h-[64px] lg:h-[80px] max-[480px]:h-[48px]">
           {/* Mobile (< lg): логотип слева */}
           <div className="flex items-center gap-4 lg:gap-6 flex-shrink-0 min-w-0">
-          <Link to="/" className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center">
             <img 
               src={logo} 
               alt="Live Grid" 
-              className="h-10 lg:h-11 w-auto object-contain"
+              className="h-8 max-[480px]:h-7 sm:h-10 lg:h-11 w-auto object-contain"
             />
           </Link>
 
@@ -200,8 +200,8 @@ function Header() {
               Войти
             </Button>
 
-            {/* Mobile: Избранное — чёрное outline-сердце */}
-            <Link to="/favorites" className="lg:hidden text-dark">
+            {/* Mobile: Избранное — tap area >= 44px */}
+            <Link to="/favorites" className="lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px] -m-2 text-dark active:bg-gray-100 rounded-lg transition-colors duration-150">
               <IconButton 
                 variant="ghost"
                 size="md"
@@ -214,9 +214,9 @@ function Header() {
               />
             </Link>
 
-            {/* Бургер меню — mobile header */}
+            {/* Бургер меню — tap area >= 44px */}
             <button 
-              className="lg:hidden flex flex-col gap-1 w-8 h-8 items-center justify-center rounded-md hover:bg-gray-100 transition-colors"
+              className="lg:hidden flex flex-col gap-1 min-w-[44px] min-h-[44px] items-center justify-center rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Меню"
               aria-expanded={isMobileMenuOpen}

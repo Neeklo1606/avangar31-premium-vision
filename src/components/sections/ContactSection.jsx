@@ -32,7 +32,7 @@ const SOCIAL_LINKS = [
 
 const ContactSection = () => {
   return (
-    <section className="w-full bg-white py-8 lg:py-10">
+    <section id="contact" className="w-full bg-white py-8 lg:py-10">
       <div className="max-w-container mx-auto px-4">
         <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold mb-5 lg:mb-6">
           Свяжитесь с <span className="text-primary">LiveGrid</span>

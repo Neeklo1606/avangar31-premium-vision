@@ -10,20 +10,20 @@ const CategoryCard = ({ image, title, className = '', onClick }) => {
       type="button"
       onClick={onClick}
       className={`
-        relative w-full h-full min-h-[88px] lg:min-h-[96px] bg-gray-50 rounded-xl overflow-hidden
+        relative w-full h-full min-h-[88px] max-[480px]:min-h-[80px] lg:min-h-[96px] bg-gray-50 rounded-xl overflow-hidden
         cursor-pointer group
         border border-gray-light/50
-        hover:border-primary/30 hover:shadow-md
-        transition-all duration-200
+        hover:border-primary/30 hover:shadow-md active:scale-[0.98] active:bg-gray-100
+        transition-all duration-150 ease-out
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
         flex text-left
         ${className}
       `.trim().replace(/\s+/g, ' ')}
     >
-      <div className="w-full h-full flex flex-col items-start gap-3 p-4 lg:p-5 min-h-0">
-        {/* Иконка сверху — размеры без изменений */}
+      <div className="w-full h-full flex flex-col items-start gap-3 p-4 max-[480px]:p-3 max-[480px]:gap-2 lg:p-5 min-h-0">
+        {/* Иконка сверху — одинаковый размер на mobile */}
         {image && (
-          <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20">
+          <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 max-[480px]:w-14 max-[480px]:h-14 lg:w-20 lg:h-20">
             <img
               src={image}
               alt={title?.replace('\n', ' ')}

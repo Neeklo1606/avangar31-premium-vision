@@ -42,7 +42,7 @@ const features = [
 
 const AdditionalFeaturesSection = () => {
   return (
-    <section className="w-full bg-white py-8 lg:py-10">
+    <section id="features" className="w-full bg-white py-8 lg:py-10">
       <div className="max-w-container mx-auto px-4">
         <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold mb-5 lg:mb-6">
           Дополнительные возможности

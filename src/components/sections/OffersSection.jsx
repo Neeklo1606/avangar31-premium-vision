@@ -64,7 +64,7 @@ const OffersSection = () => {
   ]
 
   return (
-    <section className="w-full bg-white py-6 lg:py-8">
+    <section id="offers" className="w-full bg-white py-6 lg:py-8">
       <div className="max-w-container mx-auto px-4">
         {/* Заголовок — по макету, выровнен по левому краю сетки */}
         <h2 className="text-dark text-xl lg:text-2xl font-rubik font-semibold leading-tight mb-4 lg:mb-5">

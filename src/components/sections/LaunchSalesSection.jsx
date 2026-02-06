@@ -54,7 +54,7 @@ const defaultComplexes = [
 
 const LaunchSalesSection = () => {
   return (
-    <section className="w-full bg-white py-8 lg:py-10 launch-sales-section overflow-x-hidden">
+    <section id="launch-sales" className="w-full bg-white py-8 lg:py-10 launch-sales-section overflow-x-hidden">
       <div className="max-w-container mx-auto px-4">
         {/* Шапка: заголовок + кнопка */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-5 lg:mb-6">

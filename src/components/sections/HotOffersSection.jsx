@@ -38,7 +38,7 @@ const getHref = (property) => {
 
 const HotOffersSection = () => {
   return (
-    <section className="w-full bg-white py-8 lg:py-10 hot-offers-section overflow-x-hidden">
+    <section id="hot-offers" className="w-full bg-white py-8 lg:py-10 hot-offers-section overflow-x-hidden">
       <div className="max-w-container mx-auto px-4 sm:px-6 overflow-hidden">
         {/* Заголовок: desktop — title слева, кнопка справа; mobile — по центру */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 text-center sm:text-left">

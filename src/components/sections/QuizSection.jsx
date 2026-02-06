@@ -83,7 +83,7 @@ const QuizSection = () => {
   }
 
   return (
-    <section className="w-full py-8 lg:py-12" style={{ backgroundColor: '#F6F8FB' }}>
+    <section id="quiz" className="w-full py-8 lg:py-12" style={{ backgroundColor: '#F6F8FB' }}>
       <div className="max-w-container mx-auto px-4">
         <div className="rounded-[20px] overflow-hidden flex flex-col lg:flex-row bg-white shadow-sm border border-gray-light/20">
           {/* Левая часть — основной контент */}

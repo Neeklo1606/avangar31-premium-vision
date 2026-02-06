@@ -18,7 +18,7 @@ const Tab = ({
     sm: 'h-8 px-3 text-xs font-normal',
     md: 'h-9 px-4 text-sm font-normal',
     lg: 'h-10 px-5 text-sm font-medium',
-    hero: 'h-9 px-4 text-sm font-normal',  // 36px для hero-фильтров
+    hero: 'min-h-[36px] h-9 max-[480px]:min-h-[38px] max-[480px]:h-10 px-4 py-2 text-sm font-normal leading-normal',  // 36–40px hero
   }
 
   const baseStyles = `
@@ -59,7 +59,7 @@ export const TabGroup = ({ children, className = '', layout = 'default' }) => {
   const layoutClasses = {
     default: 'flex flex-wrap gap-2',
     distribute: 'grid grid-cols-5 gap-1',
-    hero: 'flex flex-wrap justify-center items-center gap-2',
+    hero: 'flex flex-wrap justify-center items-center gap-2 max-[480px]:gap-2.5',
   }
   return (
     <div className={`${layoutClasses[layout] || layoutClasses.default} ${className}`.trim()}>

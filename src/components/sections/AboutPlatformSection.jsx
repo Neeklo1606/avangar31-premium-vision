@@ -26,7 +26,7 @@ const KeysIcon = () => (
 
 const AboutPlatformSection = () => {
   return (
-    <section className="w-full bg-white py-8 lg:py-12">
+    <section id="about" className="w-full bg-white py-8 lg:py-12">
       <div className="max-w-container mx-auto px-4">
         <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold mb-6 lg:mb-8">
           О платформе Live Grid
