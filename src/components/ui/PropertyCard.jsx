@@ -21,8 +21,9 @@ function setStoredFavorites(ids) {
 
 /**
  * Унифицированная карточка объекта недвижимости
+ * discount — опциональный блок скидки (напр. «Скидка 20% до 1 февраля 2026»)
  */
-const PropertyCard = ({ id, image, title, price, location, tags = [], href }) => {
+const PropertyCard = ({ id, image, title, price, location, tags = [], href, discount }) => {
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
   return (
     <CardWrapper
       {...cardProps}
-      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ease-out group block"
+      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out group block isolate"
     >
       {/* Изображение — отступ от краёв карточки, скругление по макету */}
       <div className="relative mx-2 mt-2 rounded-lg overflow-hidden bg-gray-50 aspect-[4/3]">
@@ -77,7 +78,7 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
           variant="ghost"
           size="sm"
           onClick={handleToggleFavorite}
-          className="absolute top-1.5 right-1.5 z-10 w-8 h-8 min-w-[32px] bg-white/70 hover:bg-white rounded-md shadow-sm"
+          className="absolute top-2 right-2 z-10 w-9 h-9 min-w-[36px] bg-white/70 hover:bg-white hover:scale-105 rounded-md shadow-sm transition-all duration-200"
           ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
           icon={
             <svg 
@@ -111,10 +112,19 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href }) =>
         </p>
 
         {/* Адрес — вторичный, не конкурирует с ценой */}
-        <p className="text-gray-medium text-xs font-rubik leading-relaxed flex items-center gap-1.5 truncate opacity-90">
-          <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
-          {location}
-        </p>
+        {location && (
+          <p className="text-gray-medium text-xs font-rubik leading-relaxed flex items-center gap-1.5 truncate opacity-90">
+            <span className="inline-block w-1 h-1 bg-gray-medium rounded-full flex-shrink-0" />
+            {location}
+          </p>
+        )}
+
+        {/* Блок скидки (5.8) — опционально для горящих предложений */}
+        {discount && (
+          <div className="mt-2 py-2 px-3 rounded-lg bg-primary text-white text-xs font-rubik font-medium">
+            {discount}
+          </div>
+        )}
       </div>
     </CardWrapper>
   )
