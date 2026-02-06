@@ -52,23 +52,23 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
   return (
     <CardWrapper
       {...cardProps}
-      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out group block isolate hot-offers-card"
+      className="relative bg-white rounded-xl overflow-hidden border border-gray-light/20 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-[180ms] ease-out group block isolate hot-offers-card"
     >
-      {/* Изображение — отступ от краёв карточки, скругление по макету */}
-      <div className="relative mx-2 mt-2 rounded-lg overflow-hidden bg-gray-50 aspect-[4/3]">
+      {/* TASK 3-4: Изображение — mobile hot: 100% ширины, бейджи с отступами, избранное 44px tap */}
+      <div className={`relative rounded-lg overflow-hidden bg-gray-50 aspect-[4/3] ${isHot ? 'mx-0 mt-0 max-[430px]:rounded-t-xl max-[430px]:rounded-b-none sm:mx-2 sm:mt-2' : 'mx-2 mt-2'}`}>
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-150 rounded-lg max-[430px]:rounded-t-xl"
         />
         
-        {/* Бейджи — аккуратные, без ощущения наклеек */}
+        {/* TASK 4: Бейджи — mobile: отступы 12px от краёв, не прижимать */}
         {tags.length > 0 && (
-          <div className="absolute top-1.5 left-1.5 flex flex-wrap gap-1 z-10">
+          <div className={`absolute flex flex-wrap gap-1 z-10 ${isHot ? 'top-2.5 left-2.5 max-[430px]:top-3 max-[430px]:left-3 max-[430px]:right-3 max-[430px]:gap-1.5 sm:top-1.5 sm:left-1.5' : 'top-1.5 left-1.5'}`}>
             {tags.slice(0, 2).map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-0.5 bg-white/90 backdrop-blur-sm rounded-md text-[11px] font-rubik font-medium text-dark"
+                className="px-2 py-0.5 bg-white/90 backdrop-blur-sm rounded-md text-[11px] font-rubik font-medium text-dark max-[430px]:px-2.5 max-[430px]:py-1"
               >
                 {tag}
               </span>
@@ -76,12 +76,12 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
           </div>
         )}
 
-        {/* Кнопка избранного — второстепенная, не конфликтует с бейджами */}
+        {/* TASK 4: Избранное — mobile: tap-area 44px, правый верхний угол */}
         <IconButton
           variant="ghost"
           size="sm"
           onClick={handleToggleFavorite}
-          className="absolute top-2 right-2 z-10 w-9 h-9 min-w-[36px] bg-white/70 hover:bg-white hover:scale-105 rounded-md shadow-sm transition-all duration-200"
+          className={`absolute top-2 right-2 z-10 bg-white/70 hover:bg-white rounded-md shadow-sm transition-all duration-150 active:scale-95 ${isHot ? 'max-[430px]:min-w-[44px] max-[430px]:min-h-[44px] max-[430px]:w-11 max-[430px]:h-11 max-[430px]:top-2.5 max-[430px]:right-2.5 sm:w-9 sm:h-9 sm:min-w-[36px]' : 'w-9 h-9 min-w-[36px]'}`}
           ariaLabel={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
           icon={
             <svg 
@@ -102,21 +102,21 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/15 to-transparent pointer-events-none" />
       </div>
 
-      {/* Информация — отступ от изображения, без залипания */}
-      <div className={`p-3 pt-2.5 flex flex-col ${isHot ? 'gap-1.5' : 'space-y-1.5'}`}>
+      {/* TASK 5-6: Информация — mobile hot: вертикальный блок, иерархия */}
+      <div className={`p-3 pt-2.5 flex flex-col ${isHot ? 'gap-1.5 max-[430px]:p-4 max-[430px]:gap-2 max-[430px]:pt-3' : 'space-y-1.5'}`}>
         {isHot ? (
           <>
-            {/* Hot: название слева, цена справа — в одну строку */}
-            <div className="flex justify-between items-baseline gap-2">
-              <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2 flex-1 min-w-0">
+            {/* Hot: desktop — title+price в строку; mobile — вертикально */}
+            <div className="flex flex-col max-[430px]:gap-1 sm:flex-row sm:justify-between sm:items-baseline sm:gap-2">
+              <h3 className="text-dark text-sm font-rubik font-medium leading-snug line-clamp-2 flex-1 min-w-0 max-[430px]:leading-relaxed max-[430px]:text-base">
                 {title}
               </h3>
-              <p className="text-dark text-base font-rubik font-bold flex-shrink-0">
+              <p className="text-dark text-base font-rubik font-bold flex-shrink-0 max-[430px]:text-lg max-[430px]:mt-0.5">
                 {price}
               </p>
             </div>
             {location && (
-              <p className="text-gray-medium text-xs font-rubik leading-relaxed truncate opacity-90">
+              <p className="text-gray-medium text-xs font-rubik leading-relaxed truncate opacity-90 max-[430px]:text-[13px]">
                 {location}
               </p>
             )}
@@ -138,9 +138,9 @@ const PropertyCard = ({ id, image, title, price, location, tags = [], href, disc
           </>
         )}
 
-        {/* Блок скидки — full width, min 44px на mobile для Hot */}
+        {/* TASK 6: CTA — mobile hot: на всю ширину, 48–56px, не прижимать к низу */}
         {discount && (
-          <div className={`mt-2 py-2 px-3 rounded-lg bg-primary text-white text-xs font-rubik font-medium flex items-center justify-center ${isHot ? 'min-h-[44px] w-full' : ''}`}>
+          <div className={`mt-2 py-2 px-3 rounded-lg bg-primary text-white text-xs font-rubik font-medium flex items-center justify-center transition-colors duration-150 active:opacity-95 ${isHot ? 'min-h-[44px] w-full max-[430px]:min-h-[48px] max-[430px]:h-[52px] max-[430px]:text-sm max-[430px]:mt-3' : ''}`}>
             {discount}
           </div>
         )}

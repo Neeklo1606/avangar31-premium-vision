@@ -38,31 +38,37 @@ const getHref = (property) => {
 
 const HotOffersSection = () => {
   return (
-    <section id="hot-offers" className="w-full bg-white py-8 lg:py-10 hot-offers-section overflow-x-hidden">
-      <div className="max-w-container mx-auto px-4 sm:px-6 overflow-hidden">
-        {/* Заголовок: desktop — title слева, кнопка справа; mobile — по центру */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 text-center sm:text-left">
-          <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold">
+    <section id="hot-offers" className="w-full bg-white py-8 lg:py-10 hot-offers-section overflow-x-hidden max-[430px]:pt-10 max-[430px]:pb-8">
+      <div className="max-w-container mx-auto px-4 sm:px-6 overflow-hidden max-[430px]:px-4">
+        {/* TASK 1: mobile — заголовок центрирован, ссылка отдельной строкой, secondary-цвет */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 text-center sm:text-left max-[430px]:mb-5 max-[430px]:gap-2 max-[430px]:mt-2">
+          <h2 className="text-dark text-2xl lg:text-3xl font-rubik font-bold max-[430px]:text-xl">
             Горящие предложения
           </h2>
           <Link
             to="/catalog"
-            className="text-primary text-sm font-rubik font-medium hover:underline sm:ml-auto"
+            className="text-primary text-sm font-rubik font-medium hover:underline sm:ml-auto max-[430px]:text-gray-medium max-[430px]:text-xs"
           >
             Все предложения
           </Link>
         </div>
 
-        <div className="relative pb-14 overflow-hidden">
+        {/* TASK 2: Контейнер — 16px padding, карточка не касается краёв */}
+        <div className="relative pb-14 overflow-hidden max-[430px]:px-0">
           <Swiper
             modules={[Pagination]}
             spaceBetween={16}
-            slidesPerView={0.85}
+            slidesPerView={1}
             slidesPerGroup={1}
             centeredSlides={true}
             grabCursor={true}
             speed={300}
             breakpoints={{
+              431: {
+                slidesPerView: 0.85,
+                slidesPerGroup: 1,
+                centeredSlides: true,
+              },
               640: {
                 slidesPerView: 2,
                 slidesPerGroup: 2,
@@ -152,6 +158,33 @@ const HotOffersSection = () => {
         @media (max-width: 768px) {
           .hot-offers-section .swiper-slide {
             padding: 0 8px;
+          }
+        }
+        /* TASK 2 + 7 + 8: mobile — карточка с отступами, пагинация, плавные анимации */
+        @media (max-width: 430px) {
+          .hot-offers-section .swiper-slide {
+            padding: 0 8px;
+            box-sizing: border-box;
+          }
+          .hot-offers-section .swiper-slide-active > * {
+            animation-duration: 0.2s;
+          }
+          .hot-offers-section .swiper {
+            padding-bottom: 3rem;
+          }
+          .hot-offers-section .swiper-pagination {
+            bottom: 0 !important;
+            margin-top: 24px;
+            gap: 6px;
+          }
+          .hot-offers-section .swiper-pagination-bullet {
+            width: 20px;
+            height: 3px;
+            opacity: 0.6;
+            transition: opacity 0.15s ease-out;
+          }
+          .hot-offers-section .swiper-pagination-bullet-active {
+            opacity: 1;
           }
         }
         @media (hover: none) {
