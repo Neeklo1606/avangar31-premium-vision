@@ -13,10 +13,10 @@ import NewsDetailPage from './pages/NewsDetailPage'
 import MapPage from './pages/MapPage'
 import FavoritesPage from './pages/FavoritesPage'
 import PrivacyPage from './pages/PrivacyPage'
-import LoginPage from './pages/auth/LoginPage'
-import RegisterPage from './pages/auth/RegisterPage'
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
-import ResetPasswordPage from './pages/auth/ResetPasswordPage'
+import LoginPage from './pages/Auth/LoginPage'
+import RegisterPage from './pages/Auth/RegisterPage'
+import ForgotPasswordPage from './pages/Auth/ForgotPasswordPage'
+import ResetPasswordPage from './pages/Auth/ResetPasswordPage'
 
 function App() {
   return (
@@ -35,11 +35,17 @@ function App() {
           <Route path="news/:id" element={<NewsDetailPage />} />
           <Route path="privacy" element={<PrivacyPage />} />
         </Route>
-        <Route element={<AuthLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="login" element={<AuthLayout />}>
+          <Route index element={<LoginPage />} />
+        </Route>
+        <Route path="register" element={<AuthLayout />}>
+          <Route index element={<RegisterPage />} />
+        </Route>
+        <Route path="forgot-password" element={<AuthLayout />}>
+          <Route index element={<ForgotPasswordPage />} />
+        </Route>
+        <Route path="reset-password/:token" element={<AuthLayout />}>
+          <Route index element={<ResetPasswordPage />} />
         </Route>
       </Routes>
     </Router>
