@@ -196,7 +196,7 @@ function Header() {
             </Link>
 
             {/* Desktop: Войти — primary синяя, высота ~40px */}
-            <Button variant="primary" size="sm" className="hidden lg:flex h-10">
+            <Button variant="primary" size="sm" to="/login" className="hidden lg:flex h-10">
               Войти
             </Button>
 
@@ -249,10 +249,10 @@ function Header() {
               ))}
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-gray-light/40">
-              <Button variant="primary" size="md" fullWidth>
+              <Button variant="primary" size="md" fullWidth to="/catalog">
                 Все объекты
               </Button>
-              <Button variant="secondary" size="md" fullWidth>
+              <Button variant="secondary" size="md" fullWidth to="/login">
                 Войти
               </Button>
             </div>
