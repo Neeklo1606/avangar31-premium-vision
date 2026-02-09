@@ -106,15 +106,18 @@ class CatalogController extends Controller
         } catch (\ValueError $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Invalid object type',
-            ], 400);
-
+                'data' => ['count' => 0, 'type' => $type, 'filters' => []],
+            ], 200);
         } catch (\Exception $e) {
+            // При ошибке (нет .env, API недоступен) отдаём 200 с count: 0, чтобы дашборд не падал
             return response()->json([
                 'success' => false,
-                'error' => 'Count failed',
-                'message' => $e->getMessage(),
-            ], 500);
+                'data' => [
+                    'count' => 0,
+                    'type' => $type,
+                    'filters' => $request->input('filter', []),
+                ],
+            ], 200);
         }
     }
 

@@ -6,6 +6,7 @@ export const useAppStore = defineStore('app', {
     selectedCityName: localStorage.getItem('selectedCityName') || 'Санкт-Петербург',
     loading: false,
     error: null,
+    dashboardStatsLoaded: false,
   }),
   
   actions: {
@@ -26,6 +27,10 @@ export const useAppStore = defineStore('app', {
     
     clearError() {
       this.error = null;
+    },
+
+    setDashboardStatsLoaded(value) {
+      this.dashboardStatsLoaded = value;
     },
   },
 });

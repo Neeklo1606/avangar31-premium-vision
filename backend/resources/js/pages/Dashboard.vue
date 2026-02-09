@@ -21,7 +21,6 @@ import StatsCard from '@/components/blocks/StatsCard.vue';
 
 const appStore = useAppStore();
 const stats = ref([]);
-const loaded = ref(false);
 
 const statsConfig = [
   { type: 'blocks', title: 'ЖК (Комплексы)', color: 'blue', link: '/admin/blocks' },
@@ -35,8 +34,8 @@ const statsConfig = [
 ];
 
 onMounted(async () => {
-  if (loaded.value) return;
-  loaded.value = true;
+  if (appStore.dashboardStatsLoaded) return;
+  appStore.setDashboardStatsLoaded(true);
   appStore.setLoading(true);
 
   try {
