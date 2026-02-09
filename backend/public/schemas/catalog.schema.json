@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.trendagent.local/schemas/catalog.schema.json",
+  "title": "TrendAgent Catalog Response",
+  "description": "Стандартный ответ каталога для всех типов объектов недвижимости",
+  "type": "object",
+  "required": ["data", "meta"],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Массив объектов недвижимости",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Уникальный идентификатор объекта"
+          },
+          "guid": {
+            "type": "string",
+            "description": "GUID объекта"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название объекта"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly идентификатор"
+          },
+          "created_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Дата создания в ISO 8601"
+          },
+          "updated_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Дата обновления в ISO 8601"
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Метаданные каталога",
+      "required": ["total", "page", "per_page", "object_type"],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "description": "Общее количество объектов",
+          "minimum": 0
+        },
+        "page": {
+          "type": "integer",
+          "description": "Текущая страница",
+          "minimum": 1
+        },
+        "per_page": {
+          "type": "integer",
+          "description": "Количество объектов на странице",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "total_pages": {
+          "type": "integer",
+          "description": "Общее количество страниц",
+          "minimum": 1
+        },
+        "has_more": {
+          "type": "boolean",
+          "description": "Есть ли еще страницы"
+        },
+        "object_type": {
+          "type": "string",
+          "description": "Тип объектов в каталоге",
+          "enum": [
+            "blocks",
+            "apartments",
+            "parking",
+            "houses",
+            "plots",
+            "commerce",
+            "house_projects",
+            "villages"
+          ]
+        },
+        "city": {
+          "type": "string",
+          "description": "ID города"
+        }
+      }
+    },
+    "filters": {
+      "type": ["object", "null"],
+      "description": "Примененные фильтры",
+      "additionalProperties": true
+    },
+    "dictionaries": {
+      "type": ["object", "null"],
+      "description": "Справочники для фильтров",
+      "additionalProperties": true
+    }
+  }
+}
