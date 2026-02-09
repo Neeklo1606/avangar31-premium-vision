@@ -10,8 +10,8 @@
 // Секретный токен для безопасности webhook
 define('DEPLOY_TOKEN', 'Lg2026_Deploy_SecureToken_98ba9f');
 
-// Путь к проекту на сервере (корень сайта)
-define('PROJECT_PATH', '/home/dsc23ytp/game_bot/public_html');
+// Путь к проекту: папка, в которой лежит deploy.php
+define('PROJECT_PATH', __DIR__);
 define('BACKEND_PATH', PROJECT_PATH . '/backend');
 
 // Проверка токена
@@ -24,12 +24,14 @@ header('Content-Type: text/plain; charset=utf-8');
 
 $allOk = true;
 
-// 1. Git pull
+// 1. Синхронизация с origin/main (код на сервере = код в репозитории)
 chdir(PROJECT_PATH);
 $out = [];
-exec('git pull origin main 2>&1', $out, $code);
-echo "=== Git Pull ===\n" . implode("\n", $out) . "\nReturn code: $code\n\n";
-if ($code !== 0) {
+exec('git fetch origin 2>&1', $out, $code);
+echo "=== Git Fetch ===\n" . implode("\n", $out) . "\n";
+exec('git reset --hard origin/main 2>&1', $out2, $code2);
+echo "=== Git Reset --hard origin/main ===\n" . implode("\n", $out2) . "\nReturn code: $code2\n\n";
+if ($code !== 0 || $code2 !== 0) {
     $allOk = false;
 }
 
@@ -56,6 +58,11 @@ if (is_dir(BACKEND_PATH)) {
     if ($code !== 0) {
         $allOk = false;
     }
+
+    // 4. Laravel: очистка кэша
+    $out = [];
+    exec('php artisan config:clear 2>&1', $out, $code);
+    echo "=== Backend: php artisan config:clear ===\n" . implode("\n", $out) . "\n";
 }
 
 if ($allOk) {
