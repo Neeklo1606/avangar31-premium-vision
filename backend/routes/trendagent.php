@@ -25,13 +25,13 @@ Route::prefix('trendagent')->name('trendagent.')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::prefix('catalog')->name('catalog.')->group(function () {
+        // Получить количество объектов (до {type}, чтобы не перехватывалось как type=blocks/count)
+        Route::get('{type}/count', [CatalogController::class, 'count'])
+            ->name('count');
+
         // Получить список объектов определённого типа
         Route::get('{type}', [CatalogController::class, 'index'])
             ->name('index');
-
-        // Получить количество объектов
-        Route::get('{type}/count', [CatalogController::class, 'count'])
-            ->name('count');
 
         // Поиск по нескольким типам
         Route::post('search', [CatalogController::class, 'search'])

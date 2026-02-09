@@ -21,6 +21,7 @@ import StatsCard from '@/components/blocks/StatsCard.vue';
 
 const appStore = useAppStore();
 const stats = ref([]);
+const loaded = ref(false);
 
 const statsConfig = [
   { type: 'blocks', title: 'ЖК (Комплексы)', color: 'blue', link: '/admin/blocks' },
@@ -34,28 +35,27 @@ const statsConfig = [
 ];
 
 onMounted(async () => {
+  if (loaded.value) return;
+  loaded.value = true;
   appStore.setLoading(true);
-  
+
   try {
     const promises = statsConfig.map(async (config) => {
       try {
         const result = await api.catalog.count(config.type);
         return {
           ...config,
-          count: result.data?.count || 0,
+          count: result.data?.count ?? result.count ?? 0,
         };
-      } catch (error) {
-        console.error(`Error loading ${config.type}:`, error);
-        return {
-          ...config,
-          count: 0,
-        };
+      } catch {
+        return { ...config, count: 0 };
       }
     });
-    
+
     stats.value = await Promise.all(promises);
   } catch (error) {
-    appStore.setError(error.message);
+    appStore.setError(error?.message || 'Ошибка загрузки');
+    stats.value = statsConfig.map((c) => ({ ...c, count: 0 }));
   } finally {
     appStore.setLoading(false);
   }

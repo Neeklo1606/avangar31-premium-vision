@@ -71,6 +71,11 @@ npm run build
 
 ## Устранение проблем
 
+- **500 Internal Server Error на /admin**
+  - **vendor/autoload.php missing** — выполните в `backend/`: `composer install --no-dev --prefer-dist --no-interaction`
+  - **Database file ... does not exist** (SQLite для сессий) — в `backend/.env` установите `SESSION_DRIVER=file` (вместо `database`), затем `php artisan config:clear`
+  - **No application encryption key** — выполните `php artisan key:generate --force` в `backend/`
+  - Убедитесь, что есть `backend/.env` (скопируйте из `.env.example` при необходимости) и созданы каталоги `storage/logs`, `storage/framework/cache`, `storage/framework/sessions`, `storage/framework/views`, `bootstrap/cache` с правами 775.
 - **composer: command not found** — установите PHP Composer или запускайте через `php composer.phar`
 - **npm: command not found** — установите Node.js и npm на сервере
 - **npm run build падает** — проверьте версию Node (нужна 18+), выполните `npm ci` и снова `npm run build`

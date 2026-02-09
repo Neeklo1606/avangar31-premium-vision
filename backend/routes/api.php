@@ -34,3 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Маршруты с проверкой роли (пример)
     // Route::middleware('role:admin')->group(function () { ... });
 });
+
+// TrendAgent API (каталог, детали, справочники)
+require __DIR__.'/trendagent.php';
