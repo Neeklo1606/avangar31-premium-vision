@@ -54,6 +54,14 @@ class DictionaryService
     }
 
     /**
+     * Получить все справочники для типа (алиас для админки/API)
+     */
+    public function getAllDictionaries(ObjectType $objectType, string $city): array
+    {
+        return $this->getDictionaries($objectType, $city, null);
+    }
+
+    /**
      * Получить конкретный справочник
      */
     public function getDictionary(
@@ -121,14 +129,19 @@ class DictionaryService
             $city
         );
 
-        // Выполнить запрос с retry
-        $response = $this->retryManager->retry(
-            fn() => $this->httpClient->get($url)
-        );
+        try {
+            $response = $this->retryManager->retry(
+                fn() => $this->httpClient->get($url)
+            );
+        } catch (\Throwable $e) {
+            return [];
+        }
 
-        // Нормализовать ответ
         $rawData = $response->json();
-        
+        if (!is_array($rawData)) {
+            return [];
+        }
+
         return $this->adapter->normalize(
             $rawData,
             $config->dictionariesFormat,

@@ -124,12 +124,23 @@ class MediaService
     }
 
     /**
+     * Универсальный метод: получить медиа по типу объекта и ID
+     */
+    public function getMedia(ObjectType $objectType, string $id, string $city): MediaCollection
+    {
+        return match ($objectType) {
+            ObjectType::BLOCKS => $this->getBlockMedia($id, $city),
+            ObjectType::APARTMENTS => $this->getApartmentMedia($id, $city),
+            default => new MediaCollection(),
+        };
+    }
+
+    /**
      * Получить медиа для квартиры
      */
     public function getApartmentMedia(string $apartmentId, string $city): MediaCollection
     {
         // Квартиры обычно имеют медиа в самом объекте
-        // Но можно расширить при необходимости
         return new MediaCollection();
     }
 

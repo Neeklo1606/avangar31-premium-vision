@@ -1,7 +1,6 @@
 <template>
   <div class="space-y-6">
-    <!-- Header Stats -->
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
       <div class="flex items-center justify-between">
         <div>
           <h3 class="text-lg font-semibold text-gray-900">ЖК (Жилые комплексы)</h3>
@@ -18,8 +17,7 @@
       @reset="resetFilters"
     />
     
-    <!-- List -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg border border-gray-200">
       <div class="divide-y divide-gray-200">
         <BlockCard
           v-for="block in blocks"

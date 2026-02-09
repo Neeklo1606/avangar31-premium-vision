@@ -80,8 +80,9 @@ class ObjectTypeResolver
 
     /**
      * Инициализация конфигураций для всех типов объектов
-     * 
-     * ЗДЕСЬ ХРАНЯТСЯ ВСЕ МАППИНГИ API
+     *
+     * Авторизация: у всех endpoint'ов TrendAgent требуется auth_token (SSO).
+     * Токен добавляется в запрос через EndpointBuilder при наличии в requiredParams.
      */
     private function initializeConfigs(): void
     {
@@ -107,7 +108,7 @@ class ObjectTypeResolver
                 domain: 'apartment-api.trendagent.ru',
                 version: 'v1',
                 path: '/directories',
-                requiredParams: ['types', 'city']
+                requiredParams: ['types', 'city', 'auth_token']
             ),
             dictionariesFormat: 'directories',
             countEndpoint: '/blocks/search/count/',
@@ -136,12 +137,12 @@ class ObjectTypeResolver
                 domain: 'apartment-api.trendagent.ru',
                 version: 'v1',
                 path: '/directories',
-                requiredParams: ['types', 'city']
+                requiredParams: ['types', 'city', 'auth_token']
             ),
             dictionariesFormat: 'directories'
         );
 
-        // PARKING (Машиноместа)
+        // PARKING (Машиноместа) — API возвращает 401 без auth_token
         $this->configs[ObjectType::PARKING->value] = new ObjectTypeConfig(
             apiDomain: 'parkings-api.trendagent.ru',
             apiVersion: null,
@@ -149,7 +150,7 @@ class ObjectTypeResolver
                 domain: 'parkings-api.trendagent.ru',
                 version: null,
                 path: '/search/places/',
-                requiredParams: ['city'],
+                requiredParams: ['city', 'auth_token'],
                 optionalParams: ['count', 'offset', 'sort', 'sort_order', 'number']
             ),
             detailEndpoint: new ApiEndpoint(
@@ -157,14 +158,14 @@ class ObjectTypeResolver
                 version: null,
                 path: '/parkings/{id}/',
                 pathParams: ['id'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesEndpoint: new ApiEndpoint(
                 domain: 'parkings-api.trendagent.ru',
                 version: null,
                 path: '/enums/{type}',
                 pathParams: ['type'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesFormat: 'enums',
             countEndpoint: '/search/blocks'
@@ -192,7 +193,7 @@ class ObjectTypeResolver
                 domain: 'apartment-api.trendagent.ru',
                 version: 'v1',
                 path: '/directories',
-                requiredParams: ['types', 'city']
+                requiredParams: ['types', 'city', 'auth_token']
             ),
             dictionariesFormat: 'directories',
             specialParams: [
@@ -208,7 +209,7 @@ class ObjectTypeResolver
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/search/plots',
-                requiredParams: ['city'],
+                requiredParams: ['city', 'auth_token'],
                 optionalParams: ['count', 'offset', 'sort_order', 'sort_type']
             ),
             detailEndpoint: new ApiEndpoint(
@@ -216,13 +217,13 @@ class ObjectTypeResolver
                 version: 'v1',
                 path: '/plots/{id}',
                 pathParams: ['id'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesEndpoint: new ApiEndpoint(
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/filter/plots',
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesFormat: 'filter',
             countEndpoint: '/search/villages?count=1'
@@ -236,7 +237,7 @@ class ObjectTypeResolver
                 domain: 'commerce-api.trendagent.ru',
                 version: null,
                 path: '/search/premises',
-                requiredParams: ['city'],
+                requiredParams: ['city', 'auth_token'],
                 optionalParams: ['count', 'offset', 'sort', 'sort_order', 'number']
             ),
             detailEndpoint: new ApiEndpoint(
@@ -244,13 +245,13 @@ class ObjectTypeResolver
                 version: null,
                 path: '/premises/{id}',
                 pathParams: ['id'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesEndpoint: new ApiEndpoint(
                 domain: 'commerce-api.trendagent.ru',
                 version: null,
                 path: '/filters',
-                requiredParams: ['name', 'city']
+                requiredParams: ['name', 'city', 'auth_token']
             ),
             dictionariesFormat: 'filters'
         );
@@ -263,7 +264,7 @@ class ObjectTypeResolver
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/projects/search',
-                requiredParams: ['city'],
+                requiredParams: ['city', 'auth_token'],
                 optionalParams: ['count', 'offset', 'sort_order', 'sort_type']
             ),
             detailEndpoint: new ApiEndpoint(
@@ -271,13 +272,13 @@ class ObjectTypeResolver
                 version: 'v1',
                 path: '/projects/{id}',
                 pathParams: ['id'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesEndpoint: new ApiEndpoint(
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/filter',
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesFormat: 'filter'
         );
@@ -290,7 +291,7 @@ class ObjectTypeResolver
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/search/villages',
-                requiredParams: ['city'],
+                requiredParams: ['city', 'auth_token'],
                 optionalParams: ['count', 'offset', 'sort_order', 'sort_type']
             ),
             detailEndpoint: new ApiEndpoint(
@@ -298,13 +299,13 @@ class ObjectTypeResolver
                 version: 'v1',
                 path: '/villages/{id}',
                 pathParams: ['id'],
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesEndpoint: new ApiEndpoint(
                 domain: 'house-api.trendagent.ru',
                 version: 'v1',
                 path: '/filter',
-                requiredParams: ['city']
+                requiredParams: ['city', 'auth_token']
             ),
             dictionariesFormat: 'filter'
         );

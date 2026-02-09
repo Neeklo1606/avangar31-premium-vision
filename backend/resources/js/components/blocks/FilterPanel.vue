@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
     <form @submit.prevent="applyFilters" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <!-- Поиск -->

@@ -28,6 +28,7 @@ return [
             'commerce' => env('TRENDAGENT_COMMERCE_DOMAIN', 'commerce-api.trendagent.ru'),
             'apartment' => env('TRENDAGENT_APARTMENT_DOMAIN', 'apartment-api.trendagent.ru'),
             'sso' => env('TRENDAGENT_SSO_DOMAIN', 'sso-api.trend.tech'),
+            'sso_ui' => env('TRENDAGENT_SSO_UI_DOMAIN', 'sso.trend.tech'),
             'video' => env('TRENDAGENT_VIDEO_DOMAIN', 'video.trendagent.ru'),
             'files' => env('TRENDAGENT_FILES_DOMAIN', 'files.trendagent.ru'),
         ],
@@ -72,7 +73,10 @@ return [
         */
         'client_id' => env('TRENDAGENT_CLIENT_ID', '66d84f584c0168b8ccd281c3'),
         'client_secret' => env('TRENDAGENT_CLIENT_SECRET', ''),
-        
+        'user_phone' => env('TRENDAGENT_USER_PHONE', env('TRENDAGENT_PHONE', '')),
+        'user_password' => env('TRENDAGENT_USER_PASSWORD', env('TRENDAGENT_PASSWORD', '')),
+        'app_id' => env('TRENDAGENT_APP_ID', '66d84f584c0168b8ccd281c3'),
+
         /*
         |--------------------------------------------------------------------------
         | Token Lifetime

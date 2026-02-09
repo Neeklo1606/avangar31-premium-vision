@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\TrendAgent\Catalog\CatalogService;
 use App\Services\TrendAgent\Dictionaries\DictionaryService;
+use App\Services\TrendAgent\Filters\FilterBuilder;
 use App\Services\TrendAgent\Core\ObjectType;
 use App\Http\Resources\TrendAgent\CatalogCollection;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +18,12 @@ use Illuminate\Http\Request;
  */
 class CatalogController extends Controller
 {
+    private const DEFAULT_CITY = '58c665588b6aa52311afa01b'; // СПб
+
     public function __construct(
         private readonly CatalogService $catalogService,
-        private readonly DictionaryService $dictionaryService
+        private readonly DictionaryService $dictionaryService,
+        private readonly FilterBuilder $filterBuilder
     ) {}
 
     /**
@@ -38,28 +42,25 @@ class CatalogController extends Controller
     public function index(Request $request, string $type): JsonResponse
     {
         try {
-            // Парсим тип объекта
             $objectType = ObjectType::from($type);
-
-            // Извлекаем фильтры из query параметров
+            $city = $request->input('city', self::DEFAULT_CITY);
             $filters = $request->input('filter', []);
-
-            // Pagination
             $page = (int) $request->input('page', 1);
             $perPage = (int) $request->input('per_page', 20);
 
-            // Получаем данные из TrendAgent
+            $filterSet = $this->filterBuilder->createFromArray($objectType, $filters);
+
             $result = $this->catalogService->getCatalog(
                 objectType: $objectType,
-                filters: $filters,
+                city: $city,
+                filters: $filterSet,
                 page: $page,
                 pageSize: $perPage
             );
 
-            // Получаем словари для фронтенда (опционально)
             $includeDictionaries = $request->boolean('with_dictionaries', false);
             $dictionaries = $includeDictionaries 
-                ? $this->dictionaryService->getAllDictionaries($objectType)
+                ? $this->dictionaryService->getAllDictionaries($objectType, $city)
                 : null;
 
             // Возвращаем через Resource Collection
@@ -72,12 +73,24 @@ class CatalogController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            // При сбое внешнего API отдаём 200 с пустым списком, чтобы админка не падала
+            $page = (int) $request->input('page', 1);
+            $perPage = (int) $request->input('per_page', 20);
             return response()->json([
-                'success' => false,
-                'error' => 'Catalog fetch failed',
-                'message' => $e->getMessage(),
-            ], 500);
+                'data' => [],
+                'meta' => [
+                    'total' => 0,
+                    'page' => $page,
+                    'per_page' => $perPage,
+                    'total_pages' => 1,
+                    'has_more' => false,
+                    'object_type' => $type,
+                    'city' => $request->input('city', self::DEFAULT_CITY),
+                ],
+                'filters' => [],
+                'dictionaries' => null,
+            ]);
         }
     }
 
@@ -90,9 +103,11 @@ class CatalogController extends Controller
     {
         try {
             $objectType = ObjectType::from($type);
+            $city = $request->input('city', self::DEFAULT_CITY);
             $filters = $request->input('filter', []);
+            $filterSet = $this->filterBuilder->createFromArray($objectType, $filters);
 
-            $count = $this->catalogService->getCount($objectType, $filters);
+            $count = $this->catalogService->getCount($objectType, $city, $filterSet);
 
             return response()->json([
                 'success' => true,
@@ -144,6 +159,7 @@ class CatalogController extends Controller
 
         try {
             $types = $request->input('types');
+            $city = $request->input('city', self::DEFAULT_CITY);
             $filters = $request->input('filters', []);
             $page = (int) $request->input('page', 1);
             $perPage = (int) $request->input('per_page', 20);
@@ -152,10 +168,12 @@ class CatalogController extends Controller
 
             foreach ($types as $typeString) {
                 $objectType = ObjectType::from($typeString);
+                $filterSet = $this->filterBuilder->createFromArray($objectType, $filters);
 
                 $result = $this->catalogService->getCatalog(
                     objectType: $objectType,
-                    filters: $filters,
+                    city: $city,
+                    filters: $filterSet,
                     page: $page,
                     pageSize: $perPage
                 );

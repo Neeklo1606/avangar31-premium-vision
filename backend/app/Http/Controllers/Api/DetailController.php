@@ -37,20 +37,17 @@ class DetailController extends Controller
     {
         try {
             $objectType = ObjectType::from($type);
-            $withAggregation = $request->boolean('with_aggregation', true);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
             $withMedia = $request->boolean('with_media', false);
 
-            // Получаем детальную информацию
             $result = $this->detailService->getDetail(
-                objectType: $objectType,
-                identifier: $id,
-                useSlug: false,
-                useAggregation: $withAggregation
+                $objectType,
+                $id,
+                $city
             );
 
-            // Опционально добавляем медиа
-            if ($withMedia && !$result->media) {
-                $media = $this->mediaService->getMedia($objectType, $id);
+            if ($withMedia && $result->media === null) {
+                $media = $this->mediaService->getMedia($objectType, $id, $city);
                 $result = new \App\Services\TrendAgent\Core\Contracts\DetailResult(
                     entity: $result->entity,
                     media: $media,
@@ -60,7 +57,6 @@ class DetailController extends Controller
                 );
             }
 
-            // Возвращаем через DetailResource
             return new DetailResource($result, $objectType);
 
         } catch (NotFoundError $e) {
@@ -98,17 +94,10 @@ class DetailController extends Controller
     {
         try {
             $objectType = ObjectType::from($type);
-            $withAggregation = $request->boolean('with_aggregation', true);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
 
-            // Получаем по slug
-            $result = $this->detailService->getDetail(
-                objectType: $objectType,
-                identifier: $slug,
-                useSlug: true,
-                useAggregation: $withAggregation
-            );
+            $result = $this->detailService->getDetailBySlug($objectType, $slug, $city);
 
-            // Возвращаем через DetailResource
             return new DetailResource($result, $objectType);
 
         } catch (NotFoundError $e) {
@@ -141,12 +130,13 @@ class DetailController extends Controller
      * Примеры:
      * - GET /api/blocks/59fc27538bcb2468a6174402/media
      */
-    public function media(string $type, string $id): JsonResponse
+    public function media(Request $request, string $type, string $id): JsonResponse
     {
         try {
             $objectType = ObjectType::from($type);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
 
-            $media = $this->mediaService->getMedia($objectType, $id);
+            $media = $this->mediaService->getMedia($objectType, $id, $city);
 
             return response()->json([
                 'success' => true,
@@ -194,19 +184,14 @@ class DetailController extends Controller
 
         try {
             $objectType = ObjectType::from($type);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
             $ids = $request->input('ids');
-            $withAggregation = $request->boolean('with_aggregation', true);
 
             $results = [];
 
             foreach ($ids as $id) {
                 try {
-                    $result = $this->detailService->getDetail(
-                        objectType: $objectType,
-                        identifier: $id,
-                        useSlug: false,
-                        useAggregation: $withAggregation
-                    );
+                    $result = $this->detailService->getDetail($objectType, $id, $city);
 
                     $results[$id] = [
                         'success' => true,

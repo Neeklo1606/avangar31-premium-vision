@@ -4,6 +4,7 @@ namespace App\Services\TrendAgent\Router;
 
 use App\Services\TrendAgent\Core\Contracts\ApiEndpoint;
 use App\Services\TrendAgent\Auth\AuthTokenManager;
+use App\Services\TrendAgent\Core\Errors\AuthExpiredError;
 
 /**
  * Построитель URL для API endpoint'ов
@@ -43,8 +44,8 @@ class EndpointBuilder
         // Добавить обязательные параметры
         $finalParams = $this->addMandatoryParams($queryParams, $city, $lang);
 
-        // Добавить auth_token
-        $finalParams = $this->addAuthToken($finalParams);
+        // Добавить auth_token только если endpoint его требует (blocks, apartments, houses)
+        $finalParams = $this->addAuthToken($endpoint, $finalParams);
 
         // Построить query string
         if (!empty($finalParams)) {
@@ -90,12 +91,21 @@ class EndpointBuilder
     }
 
     /**
-     * Добавить auth_token
+     * Добавить auth_token только если он в requiredParams endpoint'а.
+     * Паркинги, участки, коммерция, посёлки, проекты домов работают без токена.
      */
-    private function addAuthToken(array $params): array
+    private function addAuthToken(ApiEndpoint $endpoint, array $params): array
     {
-        $token = $this->authTokenManager->getValidToken();
-        $params['auth_token'] = $token;
+        if (!in_array('auth_token', $endpoint->requiredParams, true)) {
+            return $params;
+        }
+
+        try {
+            $params['auth_token'] = $this->authTokenManager->getValidToken();
+        } catch (AuthExpiredError $e) {
+            // SSO refresh не реализован или токен истёк — запрос без токена (API может вернуть 401)
+            $params['auth_token'] = '';
+        }
 
         return $params;
     }

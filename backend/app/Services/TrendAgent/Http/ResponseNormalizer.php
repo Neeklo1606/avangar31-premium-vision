@@ -67,7 +67,14 @@ class ResponseNormalizer
      */
     public function normalizeCatalogResponse(Response $response): array
     {
+        if (!$response->successful()) {
+            return ['items' => [], 'total' => 0];
+        }
+
         $data = $response->json();
+        if (!is_array($data)) {
+            return ['items' => [], 'total' => 0];
+        }
 
         // Если это массив — вернуть как есть
         if (isset($data[0])) {

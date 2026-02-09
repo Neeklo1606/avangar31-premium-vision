@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\TrendAgent\Dictionaries\DictionaryService;
 use App\Services\TrendAgent\Core\ObjectType;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Контроллер для работы со справочниками
@@ -21,18 +22,15 @@ class DictionaryController extends Controller
     /**
      * Получить все справочники для типа объекта
      * 
-     * GET /api/dictionaries/{type}
-     * 
-     * Примеры:
-     * - GET /api/dictionaries/blocks
-     * - GET /api/dictionaries/apartments
+     * GET /api/dictionaries/{type}?city=58c665588b6aa52311afa01b
      */
-    public function all(string $type): JsonResponse
+    public function all(Request $request, string $type): JsonResponse
     {
         try {
             $objectType = ObjectType::from($type);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
 
-            $dictionaries = $this->dictionaryService->getAllDictionaries($objectType);
+            $dictionaries = $this->dictionaryService->getAllDictionaries($objectType, $city);
 
             return response()->json([
                 'success' => true,
@@ -56,19 +54,15 @@ class DictionaryController extends Controller
 
     /**
      * Получить конкретный справочник
-     * 
-     * GET /api/dictionaries/{type}/{key}
-     * 
-     * Примеры:
-     * - GET /api/dictionaries/blocks/districts
-     * - GET /api/dictionaries/apartments/rooms
+     * GET /api/dictionaries/{type}/{key}?city=...
      */
-    public function show(string $type, string $key): JsonResponse
+    public function show(Request $request, string $type, string $key): JsonResponse
     {
         try {
             $objectType = ObjectType::from($type);
+            $city = $request->input('city', '58c665588b6aa52311afa01b');
 
-            $dictionary = $this->dictionaryService->getDictionary($objectType, $key);
+            $dictionary = $this->dictionaryService->getDictionary($objectType, $key, $city);
 
             return response()->json([
                 'success' => true,
