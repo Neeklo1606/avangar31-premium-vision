@@ -5,6 +5,7 @@
 
 export { default as Button } from './Button'
 export { default as Input } from './Input'
+export { default as FormField } from './FormField'
 export { default as Tab, TabGroup } from './Tab'
 export { default as IconButton } from './IconButton'
 export { default as Checkbox } from './Checkbox'

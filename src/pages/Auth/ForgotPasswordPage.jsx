@@ -1,22 +1,45 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Input } from '../../components/ui'
+import FormField from '../../components/ui/FormField'
+import { forgotPassword } from '../../services/api'
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
-  const [error, setError] = useState('')
+  const [errors, setErrors] = useState({})
+  const [generalError, setGeneralError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
-    if (!email.trim()) {
-      setError('Введите email')
-      return
+    setErrors({})
+    setGeneralError('')
+    setLoading(true)
+
+    try {
+      const data = await forgotPassword({ email })
+      setSent(true)
+      // В режиме отладки API может вернуть reset_url — редирект для теста
+      if (data?.reset_url) {
+        window.location.href = data.reset_url
+        return
+      }
+    } catch (err) {
+      setLoading(false)
+      if (err.errors) {
+        setErrors(err.errors)
+      } else if (err.message) {
+        setGeneralError(err.message)
+      } else {
+        setGeneralError('Ошибка запроса. Попробуйте позже.')
+      }
     }
-    // TODO: интеграция с бэкендом
-    console.log('Forgot password:', { email })
-    setSent(true)
+  }
+
+  const getFieldError = (field) => {
+    const arr = errors[field]
+    return Array.isArray(arr) ? arr[0] : null
   }
 
   if (sent) {
@@ -51,24 +74,34 @@ const ForgotPasswordPage = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {error && (
-            <div className="px-3 py-2 rounded-lg bg-error/10 text-error text-sm font-rubik">
-              {error}
+          {generalError && (
+            <div className="px-3 py-2 rounded-lg bg-error/10 text-error text-sm font-rubik" role="alert">
+              {generalError}
             </div>
           )}
 
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            size="lg"
-            className="h-12"
-            autoComplete="email"
-          />
+          <FormField error={getFieldError('email')}>
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: null })) }}
+              size="lg"
+              className={`h-12 ${getFieldError('email') ? 'border-error' : ''}`}
+              autoComplete="email"
+              error={!!getFieldError('email')}
+            />
+          </FormField>
 
-          <Button type="submit" variant="primary" size="lg" fullWidth className="h-12 mt-2">
-            Отправить ссылку
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            fullWidth
+            className="h-12 mt-2"
+            disabled={loading}
+          >
+            {loading ? 'Отправка...' : 'Отправить ссылку'}
           </Button>
         </form>
 

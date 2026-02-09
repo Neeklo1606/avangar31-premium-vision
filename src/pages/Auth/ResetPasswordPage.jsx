@@ -1,29 +1,52 @@
 import React, { useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { Button, Input } from '../../components/ui'
+import FormField from '../../components/ui/FormField'
+import { resetPassword } from '../../services/api'
 
 const ResetPasswordPage = () => {
   const { token } = useParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState('')
+  const emailFromQuery = searchParams.get('email') || ''
 
-  const handleSubmit = (e) => {
+  const [email, setEmail] = useState(emailFromQuery)
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [generalError, setGeneralError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
-    if (password.length < 6) {
-      setError('Пароль должен быть не менее 6 символов')
-      return
+    setErrors({})
+    setGeneralError('')
+    setLoading(true)
+
+    try {
+      await resetPassword({
+        email,
+        token: token || '',
+        password,
+        password_confirmation: passwordConfirmation,
+      })
+      setSuccess(true)
+    } catch (err) {
+      setLoading(false)
+      if (err.errors) {
+        setErrors(err.errors)
+      } else if (err.message) {
+        setGeneralError(err.message)
+      } else {
+        setGeneralError('Ошибка сброса пароля. Попробуйте позже.')
+      }
     }
-    if (password !== confirmPassword) {
-      setError('Пароли не совпадают')
-      return
-    }
-    // TODO: интеграция с бэкендом (token в URL)
-    console.log('Reset password:', { token, password })
-    setSuccess(true)
+  }
+
+  const getFieldError = (field) => {
+    const arr = errors[field]
+    return Array.isArray(arr) ? arr[0] : null
   }
 
   if (success) {
@@ -80,34 +103,63 @@ const ResetPasswordPage = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {error && (
-            <div className="px-3 py-2 rounded-lg bg-error/10 text-error text-sm font-rubik">
-              {error}
+          {generalError && (
+            <div className="px-3 py-2 rounded-lg bg-error/10 text-error text-sm font-rubik" role="alert">
+              {generalError}
             </div>
           )}
 
-          <Input
-            type="password"
-            placeholder="Новый пароль (мин. 6 символов)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            size="lg"
-            className="h-12"
-            autoComplete="new-password"
-          />
+          <FormField error={getFieldError('email')}>
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: null })) }}
+              size="lg"
+              className={`h-12 ${getFieldError('email') ? 'border-error' : ''}`}
+              autoComplete="email"
+              error={!!getFieldError('email')}
+            />
+          </FormField>
 
-          <Input
-            type="password"
-            placeholder="Повторите пароль"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            size="lg"
-            className="h-12"
-            autoComplete="new-password"
-          />
+          <FormField error={getFieldError('password')}>
+            <Input
+              type="password"
+              placeholder="Новый пароль (мин. 6 символов)"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: null })) }}
+              size="lg"
+              className={`h-12 ${getFieldError('password') ? 'border-error' : ''}`}
+              autoComplete="new-password"
+              error={!!getFieldError('password')}
+            />
+          </FormField>
 
-          <Button type="submit" variant="primary" size="lg" fullWidth className="h-12 mt-2">
-            Сохранить пароль
+          <FormField error={getFieldError('password_confirmation')}>
+            <Input
+              type="password"
+              placeholder="Повторите пароль"
+              value={passwordConfirmation}
+              onChange={(e) => {
+                setPasswordConfirmation(e.target.value)
+                setErrors((p) => ({ ...p, password_confirmation: null }))
+              }}
+              size="lg"
+              className={`h-12 ${getFieldError('password_confirmation') ? 'border-error' : ''}`}
+              autoComplete="new-password"
+              error={!!getFieldError('password_confirmation')}
+            />
+          </FormField>
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            fullWidth
+            className="h-12 mt-2"
+            disabled={loading}
+          >
+            {loading ? 'Сохранение...' : 'Сохранить пароль'}
           </Button>
         </form>
 

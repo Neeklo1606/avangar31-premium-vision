@@ -11,6 +11,15 @@
   # Главная страница — отдаём dist/index.html
   RewriteRule ^$ dist/index.html [L]
 
+  # Админ-панель: /admin и /admin/ — index админки
+  RewriteRule ^admin/?$ dist/admin/index.html [L]
+  # Файлы админки (assets и т.д.)
+  RewriteCond %{DOCUMENT_ROOT}/dist/admin/$1 -f [OR]
+  RewriteCond %{DOCUMENT_ROOT}/dist/admin/$1 -d
+  RewriteRule ^admin/(.+)$ dist/admin/$1 [L]
+  # Остальные /admin/* — SPA админки (fallback)
+  RewriteRule ^admin/(.*)$ dist/admin/index.html [L]
+
   # Файл или каталог есть в dist/ — отдаём из dist/
   RewriteCond %{DOCUMENT_ROOT}/dist%{REQUEST_URI} -f [OR]
   RewriteCond %{DOCUMENT_ROOT}/dist%{REQUEST_URI} -d
